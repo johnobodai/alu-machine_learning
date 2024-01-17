@@ -7,7 +7,8 @@ def matrix_shape(matrix):
     - matrix (list): The input matrix for which the shape is to be determined
 
     Returns:
-    - list: A list representing the shape of the matrix, where each element corresponds to the size of a dimension
+    - list: A list representing the shape of the matrix, where each element 
+            corresponds to the size of a dimension
     """
     shape = []
     while isinstance(matrix, list):
