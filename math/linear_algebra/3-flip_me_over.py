@@ -6,7 +6,7 @@ def matrix_transpose(matrix):
     Parameters:
     - list: The transpose of the input matrix
     """
-    rows, columns = len(martix), len(martix[0])
+    rows, columns = len(matrix), len(matrix[0])
     transposed_matrix = [[0] * row for x in range(columns)]
 
     for i in range(rows):
