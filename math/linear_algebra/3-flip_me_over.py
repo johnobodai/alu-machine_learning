@@ -7,7 +7,7 @@ def matrix_transpose(matrix):
     - list: The transpose of the input matrix
     """
     rows, columns = len(matrix), len(matrix[0])
-    transposed_matrix = [[0] * row for x in range(columns)]
+    transposed_matrix = [[0] * rows for x in range(columns)]
 
     for i in range(rows):
         for j in range(columns):
