@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 def matrix_shape(matrix):
     shape = []
-    while matrix:
+    while isinstance(matrix, list):
         shape.append(len(matrix))
-        try:
+        if matrix:
             matrix = matrix[0]
-        except TypeError:
+        else:
             break
     return shape
