@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 
-cat_matrices2D = __import__('7-gettin_cozy').cat_matrices2D
+import numpy as np
+np_transpose = __import__('11-the_western_exchange').np_transpose
 
-mat1 = [[1, 2], [3, 4]]
-mat2 = [[5, 6]]
-mat3 = [[7], [8]]
-mat4 = cat_matrices2D(mat1, mat2)
-mat5 = cat_matrices2D(mat1, mat3, axis=1)
-print(mat4)
-print(mat5)
-mat1[0] = [9, 10]
-mat1[1].append(5)
+mat1 = np.array([1, 2, 3, 4, 5, 6])
+mat2 = np.array([])
+mat3 = np.array([[[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]],
+                 [[11, 12, 13, 14, 15], [16, 17, 18, 19, 20]]])
+print(np_transpose(mat1))
 print(mat1)
-print(mat4)
-print(mat5)
+print(np_transpose(mat2))
+print(mat2)
+print(np_transpose(mat3))
+print(mat3)

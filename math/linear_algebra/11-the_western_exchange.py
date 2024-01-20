@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
 
 def np_transpose(matrix):
-    return [*zip(*matrix)]
+    return matrix.T
+
