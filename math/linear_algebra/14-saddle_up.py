@@ -14,7 +14,8 @@ def np_matmul(mat1, mat2):
     - mat2 (numpy.ndarray): The second input numpy array.
 
     Returns:
-    - numpy.ndarray: A new numpy array resulting from the matrix multiplication.
+    - numpy.ndarray: A new numpy array resulting from the
+        matrix multiplication.
                     Returns None if the matrices cannot be multiplied.
     """
     return np.dot(mat1, mat2)
