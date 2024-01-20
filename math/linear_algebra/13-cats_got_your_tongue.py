@@ -20,4 +20,3 @@ def np_cat(mat1, mat2, axis=0):
     - numpy.ndarray: A new numpy array resulting from the concatenation.
     """
     return np.concatenate((mat1, mat2), axis=axis)
-
