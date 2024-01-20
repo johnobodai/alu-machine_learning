@@ -16,7 +16,7 @@ def add_matrices2D(mat1, mat2):
     # Check if the matrices have the same shape
     if len(mat1) != len(mat2):
         return None
-    
+
     # Check if all rows have the same length
     for row1, row2 in zip(mat1, mat2):
         if len(row1) != len(row2):
@@ -24,7 +24,7 @@ def add_matrices2D(mat1, mat2):
 
     # Initialize an empty matrix for the result
     result = []
-    
+
     # Perform element-wise addition using nested loops
     for row1, row2 in zip(mat1, mat2):
         result_row = []
@@ -33,4 +33,3 @@ def add_matrices2D(mat1, mat2):
         result.append(result_row)
 
     return result
-
