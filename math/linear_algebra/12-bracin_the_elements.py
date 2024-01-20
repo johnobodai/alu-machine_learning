@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""A function that performs element-wise addition, subtraction, multiplication, and division of two numpy.ndarrays."""
+"""A function that performs element-wise addition, subtraction,
+    multiplication, and division of two numpy.ndarrays."""
+
 
 def np_elementwise(mat1, mat2):
     """

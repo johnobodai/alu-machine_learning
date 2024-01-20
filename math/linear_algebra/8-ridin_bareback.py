@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """A function that performs matrix multiplication."""
 
+
 def mat_mul(mat1, mat2):
     """
     Performs matrix multiplication.

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """A function that performs matrix multiplication using NumPy."""
 
+
 import numpy as np
+
 
 def np_matmul(mat1, mat2):
     """
