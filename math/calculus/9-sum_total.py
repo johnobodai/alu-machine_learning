@@ -4,7 +4,6 @@
 
 def summation_i_squared(n):
 
-
     '''
     Calculates the sigma squared of an input with a limit.
 
