@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 '''A function that calculates as Sigma notation'''
 
+
 def summation_i_squared(n):
+
+
     '''
     Calculates the sigma squared of an input with a limit.
 
@@ -18,9 +21,3 @@ def summation_i_squared(n):
         return 0
     else:
         return n ** 2 + summation_i_squared(n-1)
-'''
-if __name__ == "__main__":
-    n = 5
-    result = summation_i_squared(n)
-    print(result)
-'''
