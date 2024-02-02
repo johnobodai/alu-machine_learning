@@ -10,7 +10,8 @@ def poly_derivative(poly):
     - poly (list): Coefficients representing a polynomial.
 
     Returns:
-    - list or None: New coefficients representing the derivative of the polynomial.
+    - list or None: New coefficients representing the 
+                    derivative of the polynomial.
                     Returns None if poly is not valid.
     """
     if not isinstance(poly, list):
