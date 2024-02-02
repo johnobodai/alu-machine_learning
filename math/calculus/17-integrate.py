@@ -11,12 +11,13 @@ def poly_integral(poly, C=0):
         C (int): Integration constant.
 
     Returns:
-        list or None: New coefficients representing the integral of the polynomial.
+        list or None: New coefficients representing the
+        integral of the polynomial.
                       Returns None if poly or C are not valid.
     """
     # Check if poly is a list and C is an integer
     is_valid_poly = isinstance(poly, list)
-    is_valid_poly = is_valid_poly and all(isinstance(c, (int, float)) for c in poly)
+    is_valid_poly = is_valid_poly andall(isinstance(c, (int, float)) for c in poly)
     is_valid_poly = is_valid_poly and isinstance(C, int)
 
     if not is_valid_poly:
