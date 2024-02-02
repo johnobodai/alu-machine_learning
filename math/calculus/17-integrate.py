@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 '''Calculates the integral of a polynomial'''
 
+
 def poly_integral(poly, C=0):
     """
-    Calculates the integral of a polynomial.
+    Calculate the integral of a polynomial.
 
     Args:
         poly (list): Coefficients representing a polynomial.
         C (int): Integration constant.
 
     Returns:
-        list or None: A new list of coefficients representing the integral of the polynomial.
+        list or None: New coefficients representing the integral of the polynomial.
                       Returns None if poly or C are not valid.
     """
     # Check if poly is a list and C is an integer
-    if not isinstance(poly, list) or not all(isinstance(coeff, (int, float)) for coeff in poly) or not isinstance(C, int):
+    is_valid_poly = isinstance(poly, list)
+    is_valid_poly = is_valid_poly and all(isinstance(c, (int, float)) for c in poly)
+    is_valid_poly = is_valid_poly and isinstance(C, int)
+
+    if not is_valid_poly:
         return None
 
     # Initialize the result list with the integration constant C
