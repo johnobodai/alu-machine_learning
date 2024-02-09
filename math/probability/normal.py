@@ -5,7 +5,7 @@
 class Normal:
     """
     Represents a Normal distribution.
-    
+
     Attributes:
         mean (float): The mean of the distribution.
         stddev (float): The standard deviation of the distribution.
@@ -98,4 +98,3 @@ class Normal:
                 -((x - self.mean) ** 2) / (2 * self.stddev ** 2)
             )
         )
-
