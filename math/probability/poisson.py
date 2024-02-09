@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-
+"""Poisson distrubution"""
 
 class Poisson:
     """
-    Represents a Poisson distribution. 
+    Represents a Poisson distribution.
     Attributes:
         lambtha (float): The expected number of occurrences
                          in a given time frame.
@@ -100,4 +100,3 @@ class Poisson:
         for i in range(1, n + 1):
             result *= i
         return result
-
