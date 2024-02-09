@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Poisson distrubution"""
 
+
 class Poisson:
     """
     Represents a Poisson distribution.
