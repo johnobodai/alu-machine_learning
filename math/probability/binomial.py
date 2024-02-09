@@ -5,7 +5,7 @@
 class Binomial:
     """
     Represents a binomial distribution.
-    
+
     Attributes:
         n (int): The number of Bernoulli trials.
         p (float): The probability of a "success".
@@ -16,14 +16,18 @@ class Binomial:
         Initializes the Binomial distribution.
 
         Args:
-            data (list): A list of data to estimate the distribution.
-                         Defaults to None.
-            n (int): The number of Bernoulli trials. Defaults to 1.
-            p (float): The probability of a "success". Defaults to 0.5.
+            data (list): A list of data to estimate the
+                         distribution. Defaults to None.
+            n (int): The number of Bernoulli trials.
+                     Defaults to 1.
+            p (float): The probability of a "success".
+                       Defaults to 0.5.
 
         Raises:
-            ValueError: If n is not a positive value or p is not a valid probability.
-            TypeError: If data is not a list or contains less than two data points.
+            ValueError: If n is not a positive value or p
+                        is not a valid probability.
+            TypeError: If data is not a list or contains
+                       less than two data points.
         """
         if data is None:
             if n <= 0:
@@ -43,7 +47,8 @@ class Binomial:
 
     def pmf(self, k):
         """
-        Calculates the value of the PMF for a given number of "successes".
+        Calculates the value of the PMF for a given number
+        of "successes".
 
         Args:
             k (int): The number of "successes".
@@ -58,7 +63,8 @@ class Binomial:
 
     def cdf(self, k):
         """
-        Calculates the value of the CDF for a given number of "successes".
+        Calculates the value of the CDF for a given number
+        of "successes".
 
         Args:
             k (int): The number of "successes".
