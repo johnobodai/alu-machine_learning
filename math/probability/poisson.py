@@ -59,7 +59,7 @@ class Poisson:
             return 0
         return (
             (self.lambtha ** k)
-            * (2.71828 ** (-self.lambtha))
+            * (2.7182818285 ** (-self.lambtha))
             / self.factorial(k)
         )
 
@@ -101,3 +101,4 @@ class Poisson:
         for i in range(1, n + 1):
             result *= i
         return result
+
