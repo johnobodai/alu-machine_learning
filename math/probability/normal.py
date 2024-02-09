@@ -5,7 +5,7 @@
 class Normal:
     """
     Represents a Normal distribution.
-
+    
     Attributes:
         mean (float): The mean of the distribution.
         stddev (float): The standard deviation of the distribution.
@@ -23,9 +23,9 @@ class Normal:
                             Defaults to 1.0.
 
         Raises:
-            ValueError: If stddev is not a positive value.
-            TypeError: If data is not a list or contains less than
-                       two data points.
+            ValueError: If stddev is not positive.
+            TypeError: If data is not a list or contains less
+                       than two data points.
         """
         self.mean = float(mean)
         self.stddev = float(stddev)
@@ -38,7 +38,9 @@ class Normal:
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
             self.mean = sum(data) / len(data)
-            self.stddev = (sum([(x - self.mean) ** 2 for x in data]) / len(data)) ** 0.5
+            self.stddev = (
+                sum([(x - self.mean) ** 2 for x in data]) / len(data)
+            ) ** 0.5
 
     def z_score(self, x):
         """
@@ -74,8 +76,11 @@ class Normal:
         Returns:
             float: The PDF value for x.
         """
-        return (2 / (3.1415926536 ** 0.5 * self.stddev)) * \
-               2.7182818285 ** (-(x - self.mean) ** 2 / (2 * self.stddev ** 2))
+        return (
+            2
+            / (3.1415926536 ** 0.5)
+            * (x - (x ** 3) / 3 + (x ** 5) / 10 - (x ** 7) / 42 + (x ** 9) / 216)
+        )
 
     def cdf(self, x):
         """
@@ -87,7 +92,10 @@ class Normal:
         Returns:
             float: The CDF value for x.
         """
-        return (1 + (2 / 3.1415926536 ** 0.5) *
-                (x - self.mean) / self.stddev *
-                (1 - (4 / 3.1415926536 ** 0.5) * abs(x - self.mean) / self.stddev) ** 3) / 2
+        return (
+            1
+            - 2.7182818285 ** (
+                -((x - self.mean) ** 2) / (2 * self.stddev ** 2)
+            )
+        )
 
