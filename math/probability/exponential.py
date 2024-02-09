@@ -5,7 +5,7 @@
 class Exponential:
     """
     Represents an Exponential distribution.
-    
+
     Attributes:
         lambtha (float): The expected number of occurrences
                          in a given time frame.
@@ -76,4 +76,3 @@ class Exponential:
         if x < 0:
             return 0
         return 1 - 2.7182818285 ** (-self.lambtha * x)
-
