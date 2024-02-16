@@ -1,4 +1,5 @@
 # Ignore the animals_1 folder and its contents
+__pycache__/*
 animals_1/
 animals_1/data.npy
 animals_1/labels.npy
