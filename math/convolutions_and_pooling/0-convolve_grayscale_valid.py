@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 import numpy as np
 
-"""Performs a valid convulution on grayscale images"""
+"""
+Module: convolve_grayscale_valid
 
+This module provides a function to perform a valid convolution on grayscale images.
+"""
 
 def convolve_grayscale_valid(images, kernel):
     """
-    Performs a valid convulution on grayscale images.
+    Perform a valid convolution on grayscale images.
 
     Args:
         images (array): multiple grayscale images
@@ -15,14 +18,13 @@ def convolve_grayscale_valid(images, kernel):
     Returns:
         array: the convolved image
     """
-
     # Dimension of images and kernel.
     m, h, w = images.shape
     kh, kw = kernel.shape
 
     # Shape of the output image.
-    oh = h - kh + 1  # Outputheight
-    ow = w - kw + 1  # Outputweight
+    oh = h - kh + 1  # Output height
+    ow = w - kw + 1  # Output width
 
     convolved_images = np.zeros((m, oh, ow))
 
