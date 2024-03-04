@@ -1,56 +1,55 @@
 #!/usr/bin/env python3
-"""Calculate the cofactor matrix of a matrix"""
+"""Getting the cofactor"""
 
 
 def cofactor(matrix):
-    """
-    Calculate the cofactor matrix of a matrix.
+    """Function that calculates the cofactor matrix of a matrix"""
+    return minor(matrix)
 
-    Parameters:
-        matrix (list of lists): The input matrix for which the cofactor matrix is to be calculated.
 
-    Returns:
-        list of lists: The cofactor matrix of the input matrix.
+def determinant(matrix):
+    """Function that calculates the determinant of a matrix"""
+    if len(matrix) == 1:
+        return matrix[0][0]
+    if len(matrix) == 2:
+        determ = ((matrix[0][0] * matrix[1][1])
+                  - (matrix[0][1] * matrix[1][0]))
+        return determ
 
-    Raises:
-        TypeError: If matrix is not a list of lists.
-        ValueError: If matrix is not a square matrix or is empty.
-    """
-    if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
-        raise TypeError("matrix must be a list of lists")
+    determ = 0
+    for i, j in enumerate(matrix[0]):
+        row = [r for r in matrix[1:]]
+        temp = []
+        for r in row:
+            a = []
+            for c in range(len(matrix)):
+                if c != i:
+                    a.append(r[c])
+            temp.append(a)
+        determ += j * (-1) ** i * determinant(temp)
+    return determ
 
-    if not matrix or not all(len(row) == len(matrix) for row in matrix):
-        raise ValueError("matrix must be a non-empty square matrix")
 
-    def determinant(sub_matrix):
-        """
-        Calculate the determinant of a submatrix.
+def minor(matrix):
+    """Function that calculates the minor matrix of a matrix"""
+    if not isinstance(matrix, list) or matrix == []:
+        raise TypeError('matrix must be a list of lists')
+    if any(not isinstance(row, list) for row in matrix):
+        raise TypeError('matrix must be a list of lists')
+    if any(len(row) != len(matrix) for row in matrix):
+        raise ValueError('matrix must be a non-empty square matrix')
 
-        Parameters:
-            sub_matrix (list of lists): The submatrix for which the determinant is to be calculated.
+    if len(matrix) == 1:
+        return [[1]]
 
-        Returns:
-            float: The determinant of the submatrix.
-        """
-        if len(sub_matrix) == 1:
-            return sub_matrix[0][0]
-        elif len(sub_matrix) == 2:
-            return sub_matrix[0][0] * sub_matrix[1][1] - sub_matrix[0][1] * sub_matrix[1][0]
-        else:
-            det = 0
-            for i in range(len(sub_matrix)):
-                sign = (-1) ** i
-                cofactor = determinant([row[:i] + row[i+1:] for row in sub_matrix[1:]])
-                det += sign * sub_matrix[0][i] * cofactor
-            return det
-
-    cofactor_mat = []
-    for i in range(len(matrix)):
-        row = []
-        for j in range(len(matrix[0])):
-            sub_matrix = [row[:j] + row[j+1:] for row in (matrix[:i] + matrix[i+1:])]
-            cofactor_val = (-1) ** (i + j) * determinant(sub_matrix)
-            row.append(cofactor_val)
-        cofactor_mat.append(row)
-
-    return cofactor_mat
+    mino = []
+    for x in range(len(matrix)):
+        t = []
+        for y in range(len(matrix[0])):
+            s = []
+            for row in (matrix[:x] + matrix[x + 1:]):
+                s.append(row[:y] + row[y + 1:])
+            sign = (-1) ** ((x + y) % 2)
+            t.append(determinant(s) * sign)
+        mino.append(t)
+    return mino
