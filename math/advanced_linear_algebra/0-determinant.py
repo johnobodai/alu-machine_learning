@@ -12,7 +12,7 @@ def determinant(matrix):
 
     Returns:
     - float: The determinant of the input matrix.
-    
+
     Raises:
     - TypeError: If matrix is not a list of lists.
     - ValueError: If matrix is not square.
@@ -21,16 +21,14 @@ def determinant(matrix):
     if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
 
-    # Check if matrix is square
+    # Check if matrix is square or 0x0
     num_rows = len(matrix)
     num_cols = len(matrix[0]) if matrix else 0
 
     if num_rows != num_cols:
+        if num_rows == 0 and num_cols == 0:
+            return 1  # 0x0 matrix has determinant 1
         raise ValueError("matrix must be a square matrix")
-
-    # Base case for 0x0 matrix
-    if num_rows == 0:
-        return 1  # 0x0 matrix has determinant 1
 
     # Base case for 1x1 matrix
     if num_rows == 1:
@@ -43,4 +41,4 @@ def determinant(matrix):
         submatrix = [row[:j] + row[j+1:] for row in matrix[1:]]  # Exclude jth column
         det += sign * matrix[0][j] * determinant(submatrix)
 
-    return det
+        return det
