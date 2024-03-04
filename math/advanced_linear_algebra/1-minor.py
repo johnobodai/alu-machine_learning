@@ -3,20 +3,20 @@
 
 
 def minor(matrix):
-    """Calculate the minor matrix of a matrix.
+    """Calculates the minor matrix of a matrix.
 
     Args:
-        matrix (list): The input matrix for which the minor matrix is to be calculated.
+        matrix (list): Input matrix.
 
     Returns:
-        list: The minor matrix of the input matrix.
+        list: Minor matrix of the input.
 
     Raises:
-        TypeError: If the input is not a list of lists.
-        ValueError: If the matrix is not square or is empty.
+        TypeError: If matrix is not a list of lists.
+        ValueError: If matrix is not a square or is empty.
 
     Note:
-        - The minor matrix of a given matrix is a matrix formed by the determinants of its submatrices.
+        Minor matrix: Formed by the determinants of submatrices.
     """
     # Check if input is a list of lists
     if not all(isinstance(row, list) for row in matrix):
@@ -35,7 +35,9 @@ def minor(matrix):
     for i in range(len(matrix)):
         minor_row = []
         for j in range(len(matrix[0])):
-            minor_row.append(determinant([row[:j] + row[j + 1:] for row in (matrix[:i] + matrix[i + 1:])]))
+            sub_matrix = [row[:j] + row[j + 1:] for row in (matrix[:i] + matrix[i + 1:])]
+            determinant_value = determinant(sub_matrix)
+            minor_row.append(determinant_value)
         minor_matrix.append(minor_row)
 
     return minor_matrix
