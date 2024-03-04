@@ -4,13 +4,13 @@
 
 def adjugate(matrix):
     """Function that calculates the adjugate of a matrix"""
-    cofactor_matrix = minor(matrix)
-    transposed_matrix = []
-    for x in range(len(cofactor_matrix)):
-        transposed_matrix.append([])
-        for y in range(len(cofactor_matrix)):
-            transposed_matrix[x].append(cofactor_matrix[y][x])
-    return transposed_matrix
+    cof = minor(matrix)
+    temp = []
+    for x in range(len(cof)):
+        temp.append([])
+        for y in range(len(cof)):
+            temp[x].append(cof[y][x])
+    return temp
 
 
 def determinant(matrix):
@@ -18,16 +18,22 @@ def determinant(matrix):
     if len(matrix) == 1:
         return matrix[0][0]
     if len(matrix) == 2:
-        det = ((matrix[0][0] * matrix[1][1])
+        determ = ((matrix[0][0] * matrix[1][1])
                   - (matrix[0][1] * matrix[1][0]))
-        return det
+        return determ
 
-    det = 0
+    determ = 0
     for i, j in enumerate(matrix[0]):
-        sub_matrix = [row[1:] for row in matrix[1:]]
-        sub_matrix = [sub_matrix[k][:i] + sub_matrix[k][i+1:] for k in range(len(sub_matrix))]
-        det += j * (-1) ** i * determinant(sub_matrix)
-    return det
+        row = [r for r in matrix[1:]]
+        temp = []
+        for r in row:
+            a = []
+            for c in range(len(matrix)):
+                if c != i:
+                    a.append(r[c])
+            temp.append(a)
+        determ += j * (-1) ** i * determinant(temp)
+    return determ
 
 
 def minor(matrix):
@@ -42,7 +48,7 @@ def minor(matrix):
     if len(matrix) == 1:
         return [[1]]
 
-    minor_matrix = []
+    mino = []
     for x in range(len(matrix)):
         t = []
         for y in range(len(matrix[0])):
@@ -51,5 +57,5 @@ def minor(matrix):
                 s.append(row[:y] + row[y + 1:])
             sign = (-1) ** ((x + y) % 2)
             t.append(determinant(s) * sign)
-        minor_matrix.append(t)
-    return minor_matrix
+        mino.append(t)
+    return mino
