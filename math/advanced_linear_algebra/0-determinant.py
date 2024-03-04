@@ -1,53 +1,56 @@
 #!/usr/bin/env python3
-"""A function that calculates the
-determinant of a matrix."""
+"""This module provides a function for calculating the determinant of a matrix."""
+
 
 def determinant(matrix):
-    """
-    Calculates the determinant of
-    a matrix.
+    """Calculate the determinant of a matrix.
 
-    This function takes a matrix as
-    input and returns its determinant.
-
-    Parameters:
-    - matrix (list): The input matrix
-                     for which the
-                     determinant is to
-                     be calculated.
+    Args:
+        matrix (list): The input matrix for which the determinant is to be calculated.
 
     Returns:
-    - float: The determinant of the
-             input matrix.
+        int or float: The determinant of the input matrix.
 
     Raises:
-    - TypeError: If matrix is not a
-                 list of lists.
-    - ValueError: If matrix is not a
-                   square matrix.
+        TypeError: If the input is not a list of lists or if the matrix is empty.
+        ValueError: If the matrix is not square.
+
+    Note:
+        - The function handles the special case of a 0x0 matrix by returning 1.
+        - The function recursively calculates the determinant using the Laplace expansion.
     """
-    if not isinstance(matrix, list) or \
-       not all(isinstance(row, list) for row in matrix):
+    # Check if input is a list of lists
+    if not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
 
-    num_rows = len(matrix)
-    num_cols = len(matrix[0]) if matrix else 0
+    # Check if the input matrix is empty
+    if len(matrix) == 0 or not isinstance(matrix, list):
+        raise TypeError("matrix must be a list of lists")
 
-    if num_rows == 0 or num_cols != num_rows:
-        if num_rows == 0:
-            return 1  # 0x0 matrix has determinant 1
+    # Handle the special case of a 0x0 matrix
+    if matrix == [[]]:
+        return 1
+
+    # Check if the matrix is square
+    if not all(len(row) == len(matrix) for row in matrix):
         raise ValueError("matrix must be a square matrix")
 
-    if num_rows == 1:
+    # Base cases for 1x1 and 2x2 matrices
+    if len(matrix) == 1:
         return matrix[0][0]
+    if len(matrix) == 2:
+        return (matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0])
 
-    if num_rows == 2:
-        return matrix[0][0] * matrix[1][1] - \
-               matrix[0][1] * matrix[1][0]
-
-    det = 0
-    for x in range(num_rows):
-        submatrix = [row[:x] + row[x+1:] for row in matrix[1:]]
-        det += matrix[0][x] * determinant(submatrix) * (-1) ** x
-
-    return det
+    # Recursive calculation of determinant using Laplace expansion
+    determinant_value = 0
+    for index, num in enumerate(matrix):
+        submatrix = []
+        pivot = matrix[0][index]
+        for row in matrix[1:]:
+            new_row = []
+            for j in range(len(matrix)):
+                if j != index:
+                    new_row.append(row[j])
+            submatrix.append(new_row)
+        determinant_value += pivot * determinant(submatrix) * (-1) ** index
+    return determinant_value
