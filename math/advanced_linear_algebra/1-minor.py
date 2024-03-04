@@ -2,42 +2,33 @@
 """Calculates the minor matrix of a matrix"""
 
 
-def minor(matrix):
-    """Calculates the minor matrix of a matrix.
+def calculate_minor_matrix(matrix):
+    """
+    Calculate the minor matrix of a matrix.
 
-    Args:
-        matrix (list): Input matrix.
+    Parameters:
+        matrix (list of lists): The input matrix.
 
     Returns:
-        list: Minor matrix of the input.
-
-    Raises:
-        TypeError: If matrix is not a list of lists.
-        ValueError: If matrix is not a square or is empty.
-
-    Note:
-        Minor matrix: Formed by the determinants of submatrices.
+        list of lists: The minor matrix of the input matrix.
     """
-    # Check if input is a list of lists
-    if not all(isinstance(row, list) for row in matrix):
-        raise TypeError("matrix must be a list of lists")
+    if not isinstance(matrix, list) or matrix == []:
+        raise TypeError('matrix must be a list of lists')
+    if any(not isinstance(row, list) for row in matrix):
+        raise TypeError('matrix must be a list of lists')
+    if any(len(row) != len(matrix) for row in matrix):
+        raise ValueError('matrix must be a non-empty square matrix')
 
-    # Check if the input matrix is empty
-    if len(matrix) == 0 or not isinstance(matrix, list):
-        raise ValueError("matrix must be a non-empty square matrix")
+    if len(matrix) == 1:
+        return [[1]]
 
-    # Check if the matrix is square
-    if not all(len(row) == len(matrix) for row in matrix):
-        raise ValueError("matrix must be a non-empty square matrix")
-
-    # Calculate the minor matrix
     minor_matrix = []
-    for i in range(len(matrix)):
-        minor_row = []
-        for j in range(len(matrix[0])):
-            sub_matrix = [row[:j] + row[j + 1:] for row in (matrix[:i] + matrix[i + 1:])]
-            determinant_value = determinant(sub_matrix)
-            minor_row.append(determinant_value)
-        minor_matrix.append(minor_row)
-
+    for x in range(len(matrix)):
+        temp = []
+        for y in range(len(matrix[0])):
+            sub_matrix = []
+            for row in (matrix[:x] + matrix[x + 1:]):
+                sub_matrix.append(row[:y] + row[y + 1:])
+            temp.append(calculate_determinant(sub_matrix))
+        minor_matrix.append(temp)
     return minor_matrix
