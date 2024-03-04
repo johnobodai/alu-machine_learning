@@ -33,7 +33,7 @@ def minor(matrix):
             float: The determinant of the submatrix.
         """
         if len(sub_matrix) == 1:
-            return sub_matrix[0][0]
+            return sub_matrix
         elif len(sub_matrix) == 2:
             return sub_matrix[0][0] * sub_matrix[1][1] - sub_matrix[0][1] * sub_matrix[1][0]
         else:
