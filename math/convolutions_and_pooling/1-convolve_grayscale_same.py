@@ -1,36 +1,21 @@
 #!/usr/bin/env python3
+"""Same Convolution on an image"""
+
+
 import numpy as np
 
-"""
-Same Padding on grayscale images
-
-"""
 
 def convolve_grayscale_same(images, kernel):
-    """
-    Perform a convolution with 'same' padding on grayscale images.
-
-    Args:
-        images (array): Input grayscale images.
-        kernel (array): The convolution kernel.
-
-    Returns:
-        array: The convolved images with 'same' padding.
-    """
-    m, h, w = images.shape
+    """Function that performs a same convolution on grayscale images"""
     kh, kw = kernel.shape
-
-    pad_h = kh // 2
-    pad_w = kw // 2
-
-    images_padded = np.pad(images, ((0, 0), (pad_h, pad_h), (pad_w, pad_w)), mode='constant')
-
-    convolved_images = np.zeros_like(images)
-
-    for i in range(m):
-        for j in range(h):
-            for k in range(w):
-                region = images_padded[i, j:j+kh, k:k+kw]
-                convolved_value = np.sum(region * kernel)
-                convolved_images[i, j, k] = convolved_value
-    return convolved_images
+    m, hm, wm = images.shape
+    ph = int(kh / 2)
+    pw = int(kw / 2)
+    padded = np.pad(images, ((0, 0), (ph, ph), (pw, pw)), 'constant')
+    convoluted = np.zeros((m, hm, wm))
+    for h in range(hm):
+        for w in range(wm):
+            square = padded[:, h: h + kh, w: w + kw]
+            insert = np.sum(square * kernel, axis=1).sum(axis=1)
+            convoluted[:, h, w] = insert
+    return convoluted
