@@ -24,7 +24,7 @@ def determinant(matrix):
     # Check if matrix is square
     num_rows = len(matrix)
     if num_rows == 0:
-        return 0  # Empty matrix has determinant 0
+        return 1  # Empty matrix has determinant 1
     num_cols = len(matrix[0])
     if num_rows != num_cols:
         raise ValueError("matrix must be a square matrix")
@@ -40,4 +40,4 @@ def determinant(matrix):
         submatrix = [row[:j] + row[j+1:] for row in matrix[1:]]  # Exclude jth column
         det += sign * matrix[0][j] * determinant(submatrix)
 
-        return det
+    return det
