@@ -1,23 +1,33 @@
 #!/usr/bin/env python3
-"""A function that calculates the determinant of a matrix."""
+"""A function that calculates the
+determinant of a matrix."""
 
 def determinant(matrix):
     """
-    Calculates the determinant of a matrix.
+    Calculates the determinant of
+    a matrix.
 
-    This function takes a matrix as input and returns its determinant.
+    This function takes a matrix as
+    input and returns its determinant.
 
     Parameters:
-    - matrix (list): The input matrix for which the determinant is to be calculated.
+    - matrix (list): The input matrix
+                     for which the
+                     determinant is to
+                     be calculated.
 
     Returns:
-    - float: The determinant of the input matrix.
+    - float: The determinant of the
+             input matrix.
 
     Raises:
-    - TypeError: If matrix is not a list of lists.
-    - ValueError: If matrix is not a square matrix.
+    - TypeError: If matrix is not a
+                 list of lists.
+    - ValueError: If matrix is not a
+                   square matrix.
     """
-    if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
+    if not isinstance(matrix, list) or \
+       not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
 
     num_rows = len(matrix)
@@ -32,7 +42,8 @@ def determinant(matrix):
         return matrix[0][0]
 
     if num_rows == 2:
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+        return matrix[0][0] * matrix[1][1] - \
+               matrix[0][1] * matrix[1][0]
 
     det = 0
     for x in range(num_rows):
@@ -40,4 +51,3 @@ def determinant(matrix):
         det += matrix[0][x] * determinant(submatrix) * (-1) ** x
 
     return det
-
