@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""This module provides a function for calculating the determinant 
+"""This module provides a function for calculating the determinant
     of a matrix."""
 
 
