@@ -1,43 +1,26 @@
 #!/usr/bin/env python3
-""" Advanced Linear Algebra """
-
+""" advanced linear algebra"""
 import numpy as np
 
 
 def definiteness(matrix):
-    """
-    Determines the definiteness of a matrix.
-
-    Args:
-    - matrix (numpy.ndarray): Input matrix
-
-    Returns:
-    - str: Definiteness type ('Positive definite', 'Positive semi-definite',
-           'Negative definite', 'Negative semi-definite', or 'Indefinite')
-    """
+    """Function that calculates the definiteness of a matrix"""
     if not isinstance(matrix, np.ndarray):
-        raise TypeError("Input must be a numpy.ndarray")
-
-    # Check if the matrix is square
-    if matrix.shape[0] != matrix.shape[1]:
+        raise TypeError("matrix must be a numpy.ndarray")
+    my_len = matrix.shape[0]
+    if len(matrix.shape) != 2 or my_len != matrix.shape[1]:
         return None
-
-    # Check if the matrix is symmetric
-    if not np.allclose(matrix, matrix.T):
+    transpose = np.transpose(matrix)
+    if not np.array_equal(transpose, matrix):
         return None
-
-    # Calculate eigenvalues and eigenvectors
-    eigenvalues, _ = np.linalg.eig(matrix)
-
-    # Determine definiteness
-    if np.all(eigenvalues > 0):
+    eVals, eVecs = np.linalg.eig(matrix)
+    if all(eVals > 0):
         return "Positive definite"
-    elif np.all(eigenvalues >= 0):
+    if all(eVals >= 0):
         return "Positive semi-definite"
-    elif np.all(eigenvalues < 0):
+    if all(eVals < 0):
         return "Negative definite"
-    elif np.all(eigenvalues <= 0):
+    if all(eVals <= 0):
         return "Negative semi-definite"
     else:
-        return "Indefinite"
-
+        return 'Indefinite'
