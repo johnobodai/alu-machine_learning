@@ -1,40 +1,31 @@
 #!/usr/bin/env python3
-"""A function that calculates the determinant of a matrix."""
+"""Getting the determinant of a matrix"""
+
 
 def determinant(matrix):
-    """
-    Calculates the determinant of a matrix.
-
-    This function takes a matrix as input and returns its determinant.
-
-    Parameters:
-    - matrix (list): The input matrix for which the determinant is to be calculated.
-
-    Returns:
-    - float: The determinant of the input matrix.
-
-    Raises:
-    - TypeError: If matrix is not a list of lists.
-    - ValueError: If matrix is not a square matrix.
-    """
-    if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
+    """Function that calculates the determinant of a matrix """
+    if not all(type(row) == list for row in matrix):
         raise TypeError("matrix must be a list of lists")
-
-    num_rows = len(matrix)
-    if num_rows == 0 or len(matrix[0]) != num_rows:
-        if num_rows == 0:
-            return 1  # 0x0 matrix has determinant 1
+    if len(matrix) == 0 or type(matrix) != list:
+        raise TypeError("matrix must be a list of lists")
+    if matrix == [[]]:
+        return 1
+    if not all(len(r) == len(matrix) for r in matrix):
         raise ValueError("matrix must be a square matrix")
-
-    if num_rows == 1:
+    if len(matrix) == 1:
         return matrix[0][0]
-
-    if num_rows == 2:
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
-
+    if len(matrix) == 2:
+        x = (matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0])
+        return x
     det = 0
-    for x in range(num_rows):
-        temp = [row[:x] + row[x+1:] for row in matrix[1:]]
-        det += matrix[0][x] * determinant(temp) * (-1) ** x
-
+    for x, num in enumerate(matrix):
+        temp = []
+        P = matrix[0][x]
+        for row in matrix[1:]:
+            new = []
+            for j in range(len(matrix)):
+                if j != x:
+                    new.append(row[j])
+            temp.append(new)
+        det += P * determinant(temp) * (-1) ** x
     return det
