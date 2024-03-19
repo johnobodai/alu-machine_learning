@@ -4,82 +4,84 @@ import numpy as np
 
 
 class MultiNormal:
-  """
-  Represents a Multivariate Normal distribution.
-
-  This class calculates and stores the mean and covariance matrix of a given data set,
-  and provides a method to calculate the PDF at a specific data point.
-
-  Attributes:
-      mean (np.ndarray): A numpy array of shape (d, 1) containing the mean of the data set.
-      cov (np.ndarray): A numpy array of shape (d, d) containing the covariance matrix.
-  """
-
-  def __init__(self, data: np.ndarray) -> None:
     """
-    Initializes a MultiNormal object.
+    Represents a Multivariate Normal distribution.
 
-    Args:
-        data (np.ndarray): A 2D numpy array of shape (d, n) containing the data set.
-            n is the number of data points, d is the number of dimensions.
+    This class calculates and stores the mean and covariance
+    matrix of a given data set,
+    and provides a method to calculate the PDF at a specific data point.
 
-    Raises:
-        TypeError: If data is not a 2D numpy.ndarray.
-        ValueError: If data contains less than 2 data points.
+    Attributes:
+        mean (np.ndarray): A numpy array of shape (d, 1).
+        cov (np.ndarray): A numpy array of shape (d, d).
     """
 
-    if not isinstance(data, np.ndarray) or data.ndim != 2:
-      raise TypeError("data must be a 2D numpy.ndarray")
-    if data.shape[0] < 2:
-      raise ValueError("data must contain multiple data points")
+    def __init__(self, data: np.ndarray) -> None:
+        """
+        Initializes a MultiNormal object.
 
-    n, d = data.shape
+        Args:
+            data (np.ndarray): A 2D numpy array of shape (d, n).
+                n is the number of data points, d is the number of dimensions.
 
-    # Calculate the mean
-    self.mean = np.mean(data, axis=0, keepdims=True)
+        Raises:
+            TypeError: If data is not a 2D numpy.ndarray.
+            ValueError: If data contains less than 2 data points.
+        """
 
-    # Center the data
-    X_centered = data - self.mean
+        if not isinstance(data, np.ndarray) or data.ndim != 2:
+            raise TypeError("data must be a 2D numpy.ndarray")
+        if data.shape[0] < 2:
+            raise ValueError("data must contain multiple data points")
 
-    # Calculate the covariance matrix (without using numpy.cov)
-    self.cov = np.dot(X_centered.T, X_centered) / (n - 1)
+        n, d = data.shape
 
-  def pdf(self, x: np.ndarray) -> float:
-    """
-    Calculates the probability density function (PDF) at a data point.
+        # Calculate the mean
+        self.mean = np.mean(data, axis=0, keepdims=True)
 
-    Args:
-        x (np.ndarray): A numpy array of shape (d, 1) containing the data point.
-            d is the number of dimensions.
+        # Center the data
+        X_centered = data - self.mean
 
-    Returns:
-        float: The value of the PDF at the data point x.
+        # Calculate the covariance matrix (without using numpy.cov)
+        self.cov = np.dot(X_centered.T, X_centered) / (n - 1)
 
-    Raises:
-        TypeError: If x is not a numpy.ndarray.
-        ValueError: If x does not have the shape (d, 1).
-    """
+    def pdf(self, x: np.ndarray) -> float:
+        """
+        Calculates the probability density function (PDF) at a data point.
 
-    if not isinstance(x, np.ndarray) or x.ndim != 2 or x.shape[1] != 1:
-      raise ValueError("x must have the shape ({}, 1)".format(self.mean.shape[0]))
+        Args:
+            x (np.ndarray): A numpy array of shape (d, 1).
+                d is the number of dimensions.
 
-    d = self.mean.shape[0]  # Get the number of dimensions from mean shape
-    n_x = x.shape[0]  # Get the number of data points in x (should be 1)
+        Returns:
+            float: The value of the PDF at the data point x.
 
-    if n_x != d:
-      raise ValueError("x must have the shape ({}, 1)".format(d))
+        Raises:
+            TypeError: If x is not a numpy.ndarray.
+            ValueError: If x does not have the shape (d, 1).
+        """
 
-    # Calculate the mahalanobis distance
-    mahalanobis = np.linalg.inv(self.cov) @ (x - self.mean)
-    mahalanobis_sq = np.dot(mahalanobis.T, mahalanobis)
+        if not isinstance(x, np.ndarray) or x.ndim != 2 or x.shape[1] != 1:
+            raise ValueError("x must have the \
+                    shape ({}, 1)".format(self.mean.shape[0]))
 
-    # Constant term (excluding normalization constant)
-    constant_term = -0.5 * mahalanobis_sq
+        d = self.mean.shape[0]  # Get the number of dimensions from mean shape
+        n_x = x.shape[0]  # Get the number of data points in x (should be 1)
 
-    # Calculate the normalization constant (determinant of covariance matrix)
-    det_cov = np.linalg.det(self.cov)
+        if n_x != d:
+            raise ValueError("x must have the shape ({}, 1)".format(d))
 
-    # PDF formula (without numpy.exp for efficiency)
-    pdf = np.exp(constant_term) / (np.sqrt((2 * np.pi) ** d * det_cov))
+        # Calculate the mahalanobis distance
+        mahalanobis = np.linalg.inv(self.cov) @ (x - self.mean)
+        mahalanobis_sq = np.dot(mahalanobis.T, mahalanobis)
 
-    return pdf[0, 0]  # Return the only element for a single data point
+        # Constant term (excluding normalization constant)
+        constant_term = -0.5 * mahalanobis_sq
+
+        # Calculate the normalization constant
+        det_cov = np.linalg.det(self.cov)
+
+        # PDF formula (without numpy.exp for efficiency)
+        pdf = np.exp(constant_term) / (np.sqrt((2 * np.pi) ** d * det_cov))
+
+        return pdf[0, 0]  # Return the only element for a single data point
