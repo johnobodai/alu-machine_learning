@@ -2,6 +2,7 @@
 """Create a class Normal that represents a normal distribution
 """
 
+
 class Normal:
     """
     Represents a normal distribution.
@@ -30,8 +31,8 @@ class Normal:
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
             self.mean = sum(data) / len(data)
-            self.stddev = (sum((x - self.mean) **\
-                        2 for x in data) / len(data)) ** 0.5
+            self.stddev = (sum((x - self.mean) ** 2 for x in data) /
+                           len(data)) ** 0.5
 
     def z_score(self, x):
         """
@@ -93,6 +94,5 @@ class Normal:
         Returns:
             float: Error function value.
         """
-        return (2 / (self.PI ** 0.5)) * (x - (x ** 3)\
-                / 3 + (x ** 5) / 10 - (x ** 7))
-
+        return (2 / (self.PI ** 0.5)) * (x - (x ** 3) / 3 +
+                                         (x ** 5) / 10 - (x ** 7) / 42)
