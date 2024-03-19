@@ -1,71 +1,66 @@
 #!/usr/bin/env python3
-"""Class MultiNormal representing a Multivariate Normal distribution"""
+"""
+Class MultiNormal representing a Multivariate Normal distribution.
+"""
+
 import numpy as np
 
 
 class MultiNormal:
-    """Class that represents a Multivariate Normal distribution"""
+    """
+    Class that represents a Multivariate Normal distribution.
+    """
 
     def __init__(self, data):
-        """Constructor for MultiNormal class
+        """
+        Constructor for MultiNormal class.
 
         Args:
-            data (numpy.ndarray): A 2D numpy array of shape (d, n).
+            data (numpy.ndarray): A 2D numpy array of shape (n, d) containing the data set.
+                n is the number of data points.
+                d is the number of dimensions in each data point.
 
         Raises:
             TypeError: If data is not a 2D numpy.ndarray.
-            ValueError: If data contains fewer than 2 data points.
+            ValueError: If n is less than 2.
         """
-        if not isinstance(data, np.ndarray) or len(data.shape) != 2:
-            raise TypeError('data must be a 2D numpy.ndarray')
-
+        if type(data) is not np.ndarray or len(data.shape) != 2:
+            raise TypeError("data must be a 2D numpy.ndarray")
         d, n = data.shape
         if n < 2:
             raise ValueError("data must contain multiple data points")
 
-        self.mean, self.cov = self.mean_cov(data)
-
-    @staticmethod
-    def mean_cov(X):
-        """Calculates the mean and covariance of a data set
-
-        Args:
-            X (numpy.ndarray): A 2D numpy array of shape (d, n)
-
-        Returns:
-            tuple: A tuple containing the mean and covariance
-
-        """
-        d, n = X.shape
-        m = np.mean(X, axis=1, keepdims=True)
-        C = np.dot((X - m), (X - m).T) / (n - 1)
-        return m, C
+        self.data = data
+        mean = np.mean(data, axis=1, keepdims=True)
+        self.mean = mean
+        cov = np.matmul(data - mean, data.T - mean.T) / (n - 1)
+        self.cov = cov
 
     def pdf(self, x):
-        """Calculates the PDF at a data point
+        """
+        Calculates the PDF at a data point.
 
         Args:
-            x (numpy.ndarray): A numpy array of shape (d, 1)
+            x (numpy.ndarray): A numpy array of shape (d, 1) containing the data point
+                whose PDF should be calculated, where d is the number of dimensions.
 
         Returns:
-            float: The value of the PDF at the data point x.
-
-        Raises:
-            TypeError: If x is not a numpy.ndarray.
-            ValueError: If x does not have the shape (d, 1).
-
+            float: The PDF at the given data point.
         """
-        if not isinstance(x, np.ndarray):
+        if type(x) is not np.ndarray:
             raise TypeError("x must be a numpy.ndarray")
-
         d = self.cov.shape[0]
-        if x.shape != (d, 1):
-            raise ValueError('x must have the shape ({}, 1)'.format(d))
+        if len(x.shape) != 2:
+            raise ValueError("x must have the shape ({}, 1)".format(d))
+        test_d, one = x.shape
+        if test_d != d or one != 1:
+            raise ValueError("x must have the shape ({}, 1)".format(d))
 
-        m = self.mean
-        cov = self.cov
-        bottom = np.sqrt(((2 * np.pi) ** d) * (np.linalg.det(cov)))
-        inv = np.linalg.inv(cov)
-        exp = (-0.5 * np.matmul(np.matmul((x - m).T, inv), (x - m)))
-        result = (1 / bottom) * np.exp(exp[0][0])
-        return result
+        det = np.linalg.det(self.cov)
+        inv = np.linalg.inv(self.cov)
+        pdf = 1.0 / np.sqrt(((2 * np.pi) ** d) * det)
+        mult = np.matmul(np.matmul((x - self.mean).T, inv), (x - self.mean))
+        pdf *= np.exp(-0.5 * mult)
+        pdf = pdf[0][0]
+        return pdf
+
