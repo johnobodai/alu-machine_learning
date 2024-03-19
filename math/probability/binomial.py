@@ -2,6 +2,7 @@
 """A binomial class
 """
 
+
 class Binomial:
     """Represents a binomial distribution."""
 
@@ -41,7 +42,8 @@ class Binomial:
         n_fact = self.factorial(self.n)
         k_fact = self.factorial(k)
         n_k_fact = self.factorial(self.n - k)
-        return (n_fact / (k_fact * n_k_fact)) * (self.p ** k) * ((1 - self.p) ** (self.n - k))
+        return (n_fact / (k_fact * n_k_fact)) *\
+        (self.p ** k) * ((1 - self.p) ** (self.n - k))
 
     def cdf(self, k):
         """Calculates the cumulative distribution function."""
@@ -49,4 +51,3 @@ class Binomial:
         if k < 0:
             return 0
         return sum(self.pmf(i) for i in range(0, k + 1))
-
