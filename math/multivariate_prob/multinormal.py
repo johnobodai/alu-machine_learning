@@ -16,9 +16,7 @@ class MultiNormal:
         Constructor for MultiNormal class.
 
         Args:
-            data (numpy.ndarray): A 2D numpy array of shape (n, d) containing the data set.
-                n is the number of data points.
-                d is the number of dimensions in each data point.
+            data (numpy.ndarray): A 2D numpy array of shape (n, d)
 
         Raises:
             TypeError: If data is not a 2D numpy.ndarray.
@@ -41,8 +39,7 @@ class MultiNormal:
         Calculates the PDF at a data point.
 
         Args:
-            x (numpy.ndarray): A numpy array of shape (d, 1) containing the data point
-                whose PDF should be calculated, where d is the number of dimensions.
+            x (numpy.ndarray): A numpy array of shape (d, 1)
 
         Returns:
             float: The PDF at the given data point.
@@ -63,4 +60,3 @@ class MultiNormal:
         pdf *= np.exp(-0.5 * mult)
         pdf = pdf[0][0]
         return pdf
-
