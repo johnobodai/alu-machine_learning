@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
+"""Module for calculating a correlation matrix."""
+
 import numpy as np
-""" Correlation Matrix from a covariance matrix"""
 
 
 def correlation(C):
-    """
-    Calculates the correlation matrix from a covariance matrix.
+    """Calculate correlation matrix from covariance matrix.
 
     Args:
         C: A numpy.ndarray of shape (d, d) containing the covariance matrix.
@@ -18,7 +18,6 @@ def correlation(C):
         TypeError: If C is not a 2D numpy.ndarray.
         ValueError: If C is not a square matrix.
     """
-
     if not isinstance(C, np.ndarray):
         raise TypeError("C must be a numpy.ndarray")
     if C.ndim != 2 or C.shape[0] != C.shape[1]:
