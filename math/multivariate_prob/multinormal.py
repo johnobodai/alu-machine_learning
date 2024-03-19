@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Multinormal distribution"""
+"""Multinormal distribution class."""
 import numpy as np
 
 
@@ -7,13 +7,12 @@ class MultiNormal:
     """
     Represents a Multivariate Normal distribution.
 
-    This class calculates and stores the mean and covariance
-    matrix of a given data set,
-    and provides a method to calculate the PDF at a specific data point.
+    This class calculates and stores the mean and covariance matrix of a given data set,
+    and provides a method to calculate the probability density function (PDF) at a specific data point.
 
     Attributes:
-        mean (np.ndarray): A numpy array of shape (d, 1).
-        cov (np.ndarray): A numpy array of shape (d, d).
+        mean (np.ndarray): A numpy array of shape (d, 1) containing the mean of the data set.
+        cov (np.ndarray): A numpy array of shape (d, d) containing the covariance matrix.
     """
 
     def __init__(self, data: np.ndarray) -> None:
@@ -21,7 +20,7 @@ class MultiNormal:
         Initializes a MultiNormal object.
 
         Args:
-            data (np.ndarray): A 2D numpy array of shape (d, n).
+            data (np.ndarray): A 2D numpy array of shape (d, n) containing the data set.
                 n is the number of data points, d is the number of dimensions.
 
         Raises:
@@ -50,7 +49,7 @@ class MultiNormal:
         Calculates the probability density function (PDF) at a data point.
 
         Args:
-            x (np.ndarray): A numpy array of shape (d, 1).
+            x (np.ndarray): A numpy array of shape (d, 1) containing the data point.
                 d is the number of dimensions.
 
         Returns:
@@ -62,8 +61,7 @@ class MultiNormal:
         """
 
         if not isinstance(x, np.ndarray) or x.ndim != 2 or x.shape[1] != 1:
-            raise ValueError("x must have the \
-                    shape ({}, 1)".format(self.mean.shape[0]))
+            raise ValueError("x must have the shape ({}, 1)".format(self.mean.shape[0]))
 
         d = self.mean.shape[0]  # Get the number of dimensions from mean shape
         n_x = x.shape[0]  # Get the number of data points in x (should be 1)
