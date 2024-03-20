@@ -41,9 +41,11 @@ def marginal(x, n, P, Pr):
     likelihoods = intersection(x, n, P, Pr)
     return np.sum(likelihoods)
 
-
 def posterior(x, n, P, Pr):
     intersection_probs = intersection(x, n, P, Pr)
     marginal_prob = marginal(x, n, P, Pr)
-    posterior_probs = np.divide(intersection_probs, marginal_prob, out=np.zeros_like(intersection_probs), where=(marginal_prob != 0))
+    posterior_probs = np.zeros_like(intersection_probs)
+    for i in range(len(posterior_probs)):
+        if marginal_prob[i] != 0:
+            posterior_probs[i] = intersection_probs[i] / marginal_prob[i]
     return posterior_probs
