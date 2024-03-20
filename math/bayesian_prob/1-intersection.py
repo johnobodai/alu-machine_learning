@@ -29,9 +29,7 @@ def intersection(x, n, P, Pr):
 
     likelihoods = np.zeros_like(P, dtype=float)
     if x <= n:
-        if x == 0:
-            likelihoods[P == 0] = Pr[P == 0]
-        else:
-            likelihoods[P != 0] = np.array([np.math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x)) for p in P[P != 0]]) * Pr[P != 0]
+        for i, p in enumerate(P):
+            likelihoods[i] = (np.prod(np.arange(n - x + 1, n + 1)) / np.prod(np.arange(1, x + 1))) * (p ** x) * ((1 - p) ** (n - x)) * Pr[i]
 
     return likelihoods
