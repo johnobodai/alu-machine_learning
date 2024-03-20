@@ -30,6 +30,7 @@ def intersection(x, n, P, Pr):
     likelihoods = np.zeros_like(P, dtype=float)
     if x <= n:
         for i, p in enumerate(P):
-            likelihoods[i] = (np.prod(np.arange(n - x + 1, n + 1)) / np.prod(np.arange(1, x + 1))) * (p ** x) * ((1 - p) ** (n - x)) * Pr[i]
+            likelihood = (np.prod(np.arange(n - x + 1, n + 1)) / np.prod(np.arange(1, x + 1))) * (p ** x) * ((1 - p) ** (n - x)) * Pr[i]
+            likelihoods[i] = max(0, likelihood)  # Ensure the likelihood is non-negative
 
     return likelihoods
