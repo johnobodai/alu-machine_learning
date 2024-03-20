@@ -28,9 +28,10 @@ def intersection(x, n, P, Pr):
         raise ValueError("Pr must sum to 1")
 
     likelihoods = np.zeros_like(P, dtype=float)
-    if x == 0:
-        likelihoods[P == 0] = Pr[P == 0]
-    else:
-        likelihoods[P != 0] = np.array([np.math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x)) for p in P[P != 0]]) * Pr[P != 0]
+    if x <= n:
+        if x == 0:
+            likelihoods[P == 0] = Pr[P == 0]
+        else:
+            likelihoods[P != 0] = np.array([np.math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x)) for p in P[P != 0]]) * Pr[P != 0]
 
     return likelihoods
