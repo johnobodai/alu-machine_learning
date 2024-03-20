@@ -45,4 +45,5 @@ def marginal(x, n, P, Pr):
 def posterior(x, n, P, Pr):
     intersection_probs = intersection(x, n, P, Pr)
     marginal_prob = marginal(x, n, P, Pr)
-    return intersection_probs / marginal_prob
+    posterior_probs = np.divide(intersection_probs, marginal_prob, out=np.zeros_like(intersection_probs), where=(marginal_prob != 0))
+    return posterior_probs
