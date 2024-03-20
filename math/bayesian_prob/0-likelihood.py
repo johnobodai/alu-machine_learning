@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
+"""
+Module for calculating likelihood in Bayesian statistics.
+"""
 import numpy as np
 
 
 def binomial_coefficient(n, k):
+    """
+    Calculate the binomial coefficient (n choose k) using dynamic programming.
+    """
     if k > n:
         return 0
     dp = [0] * (k + 1)
@@ -14,6 +20,29 @@ def binomial_coefficient(n, k):
 
 
 def likelihood(x, n, P):
+    """
+    Calculate the likelihood of obtaining the data given
+    various hypothetical probabilities.
+
+    Parameters:
+        x (int): The number of patients that develop
+                 severe side effects.
+        n (int): The total number of patients observed.
+        P (numpy.ndarray): An array containing the various
+                           hypothetical probabilities of developing
+                           severe side effects.
+
+    Returns:
+        numpy.ndarray: An array containing the likelihood
+        of obtaining the data, x and n, for each probability in P.
+
+    Raises:
+        ValueError: If n is not a positive integer, x is not an
+        integer that is greater than or equal to 0, x is greater than n,
+                    P is not a 1D numpy array, or any value in P is
+                    not in the range [0, 1].
+        TypeError: If P is not a 1D numpy array.
+    """
     if not isinstance(n, int) or n <= 0:
         raise ValueError("n must be a positive integer")
 
