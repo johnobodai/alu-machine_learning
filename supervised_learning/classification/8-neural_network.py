@@ -8,7 +8,7 @@ import numpy as np
 
 class NeuralNetwork:
     """
-    Represents a neural network with one 
+    Represents a neural network with one
     hidden layer performing binary classification.
     """
 
