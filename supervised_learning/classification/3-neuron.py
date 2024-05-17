@@ -6,6 +6,7 @@ classification.
 
 import numpy as np
 
+
 class Neuron:
     """
     Represents a single neuron performing binary
