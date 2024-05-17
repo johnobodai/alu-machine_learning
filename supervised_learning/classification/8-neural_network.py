@@ -1,184 +1,76 @@
 #!/usr/bin/env python3
-"""
-Module for a single neuron performing binary
-classification.
-"""
-
-import numpy as np
-
-
-class Neuron:
+class NeuralNetwork:
     """
-    Represents a single neuron performing binary
-    classification.
+    Represents a neural network with one 
+    hidden layer performing binary classification.
     """
 
-    def __init__(self, nx):
+    def __init__(self, nx, nodes):
         """
-        Initializes a Neuron instance.
+        Initializes a NeuralNetwork instance.
 
         Parameters:
             nx (int): Number of input features.
+            nodes (int): Number of nodes in the hidden layer.
 
         Raises:
-            TypeError: If nx is not an integer.
-            ValueError: If nx is less than 1.
+            TypeError: If nx or nodes is not an integer.
+            ValueError: If nx or nodes is less than 1.
         """
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
-            raise ValueError("nx must be positive")
+            raise ValueError("nx must be a positive integer")
+        if not isinstance(nodes, int):
+            raise TypeError("nodes must be an integer")
+        if nodes < 1:
+            raise ValueError("nodes must be a positive integer")
 
-        self.__W = np.random.randn(1, nx)
-        self.__b = 0
-        self.__A = 0
-
-    def forward_prop(self, X):
-        """
-        Calculates forward propagation.
-
-        Parameters:
-            X (numpy.ndarray): Input data (shape: (nx, m)).
-
-        Returns:
-            numpy.ndarray: Activated output of the
-            neuron.
-        """
-        Z = np.dot(self.__W, X) + self.__b
-        self.__A = 1 / (1 + np.exp(-Z))
-        return self.__A
-
-    def cost(self, Y, A):
-        """
-        Calculates the cost using logistic regression.
-
-        Parameters:
-            Y (numpy.ndarray): Correct labels (shape:
-            (1, m)).
-            A (numpy.ndarray): Activated output (shape:
-            (1, m)).
-
-        Returns:
-            float: Cost of the model.
-        """
-        m = Y.shape[1]
-        cost = -np.sum((Y * np.log(A)) +
-                       ((1 - Y) * np.log(1.0000001 - A))) / m
-        return cost
+        self.__W1 = np.random.randn(nodes, nx)
+        self.__b1 = np.zeros((nodes, 1))
+        self.__A1 = 0
+        self.__W2 = np.random.randn(1, nodes)
+        self.__b2 = 0
+        self.__A2 = 0
 
     @property
-    def W(self):
+    def W1(self):
         """
-        Getter for the weights vector.
-
-        Returns:
-            numpy.ndarray: Weights vector.
+        Getter for the weights vector of the hidden layer.
         """
-        return self.__W
+        return self.__W1
 
     @property
-    def b(self):
+    def b1(self):
         """
-        Getter for the bias.
-
-        Returns:
-            float: Bias.
+        Getter for the bias of the hidden layer.
         """
-        return self.__b
+        return self.__b1
 
     @property
-    def A(self):
+    def A1(self):
         """
-        Getter for the activated output.
-
-        Returns:
-            float: Activated output.
+        Getter for the activated output of the hidden layer.
         """
-        return self.__A
+        return self.__A1
 
-    def evaluate(self, X, Y):
+    @property
+    def W2(self):
         """
-        Evaluates the neuron's predictions.
-
-        Parameters:
-            X (numpy.ndarray): Input data (shape: (nx, m)).
-            Y (numpy.ndarray): Correct labels (shape: (1, m)).
-
-        Returns:
-            tuple: Prediction and cost of the network.
-                - Prediction: numpy.ndarray with shape (1, m)
-                - Cost: Cost of the network.
+        Getter for the weights vector of the output neuron.
         """
-        A = self.forward_prop(X)
-        prediction = np.where(A >= 0.5, 1, 0)
-        cost = self.cost(Y, A)
-        return prediction, cost
+        return self.__W2
 
-    def gradient_descent(self, X, Y, A, alpha=0.05):
+    @property
+    def b2(self):
         """
-        Calculates one pass of gradient descent on the neuron.
-
-        Parameters:
-            X (numpy.ndarray): Input data (shape: (nx, m)).
-            Y (numpy.ndarray): Correct labels (shape: (1, m)).
-            A (numpy.ndarray): Activated output (shape: (1, m)).
-            alpha (float): Learning rate.
-
+        Getter for the bias of the output neuron.
         """
-        m = Y.shape[1]
+        return self.__b2
 
-        dz = A - Y
-        dw = np.dot(X, dz.T) / m
-        db = np.sum(dz) / m
-
-        self.__W -= alpha * dw.T
-        self.__b -= alpha * db
-
-    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
+    @property
+    def A2(self):
         """
-        Trains the neuron.
-
-        Parameters:
-            X (numpy.ndarray): Input data (shape: (nx, m)).
-            Y (numpy.ndarray): Correct labels (shape: (1, m)).
-            iterations (int): Number of iterations to train over.
-            alpha (float): Learning rate.
-            verbose (bool): Whether to print information about the training.
-            graph (bool): Whether to graph information about the training.
-            step (int): Step for printing and plotting.
-
-        Returns:
-            tuple: Evaluation of the training data after iterations of training have occurred.
+        Getter for the activated output of the output neuron.
         """
-        if not isinstance(iterations, int):
-            raise TypeError("iterations must be an integer")
-        if iterations < 1:
-            raise ValueError("iterations must be a positive integer")
-        if not isinstance(alpha, float):
-            raise TypeError("alpha must be a float")
-        if alpha <= 0:
-            raise ValueError("alpha must be positive")
-        if not isinstance(step, int):
-            raise TypeError("step must be an integer")
-        if step <= 0 or step > iterations:
-            raise ValueError("step must be positive and <= iterations")
-
-        costs = []
-        for i in range(iterations + 1):
-            A = self.forward_prop(X)
-            self.gradient_descent(X, Y, A, alpha)
-
-            if verbose and i % step == 0:
-                cost = self.cost(Y, A)
-                print("Cost after {} iterations: {}".format(i, cost))
-                costs.append(cost)
-
-        if graph:
-            plt.plot(costs, 'b-')
-            plt.xlabel('Iteration')
-            plt.ylabel('Cost')
-            plt.title('Training Cost')
-            plt.show()
-
-        return self.evaluate(X, Y)
-
+        return self.__A2
