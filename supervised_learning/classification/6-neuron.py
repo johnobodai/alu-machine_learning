@@ -134,7 +134,7 @@ class Neuron:
         self.__W -= alpha * dw.T
         self.__b -= alpha * db
 
-    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
+    def train(self, X, Y, iterations=5000, alpha=0.05):
         """
         Trains the neuron.
 
@@ -143,42 +143,24 @@ class Neuron:
             Y (numpy.ndarray): Correct labels (shape: (1, m)).
             iterations (int): Number of iterations to train over.
             alpha (float): Learning rate.
-            verbose (bool): Whether to print information about the training.
-            graph (bool): Whether to graph information about the training.
-            step (int): Step for printing and plotting.
 
         Returns:
-            tuple: Evaluation of the training data after iterations of training have occurred.
+            numpy.ndarray: Activated output of the neuron.
+            float: Cost of the model.
         """
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
-        if iterations < 1:
+        if iterations <= 0:
             raise ValueError("iterations must be a positive integer")
         if not isinstance(alpha, float):
             raise TypeError("alpha must be a float")
         if alpha <= 0:
             raise ValueError("alpha must be positive")
-        if not isinstance(step, int):
-            raise TypeError("step must be an integer")
-        if step <= 0 or step > iterations:
-            raise ValueError("step must be positive and <= iterations")
 
-        costs = []
-        for i in range(iterations + 1):
-            A = self.forward_prop(X)
-            self.gradient_descent(X, Y, A, alpha)
-
-            if verbose and i % step == 0:
-                cost = self.cost(Y, A)
-                print("Cost after {} iterations: {}".format(i, cost))
-                costs.append(cost)
-
-        if graph:
-            plt.plot(costs, 'b-')
-            plt.xlabel('Iteration')
-            plt.ylabel('Cost')
-            plt.title('Training Cost')
-            plt.show()
+        for i in range(iterations):
+            self.__A = self.forward_prop(X)
+            self.gradient_descent(X, Y, self.__A, alpha)
 
         return self.evaluate(X, Y)
+
 
