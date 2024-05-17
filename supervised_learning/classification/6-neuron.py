@@ -162,5 +162,3 @@ class Neuron:
             self.gradient_descent(X, Y, self.__A, alpha)
 
         return self.evaluate(X, Y)
-
-

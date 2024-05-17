@@ -145,14 +145,15 @@ class Neuron:
             alpha (float): Learning rate.
             verbose (bool): Whether to print information about the training.
             graph (bool): Whether to graph information about the training.
-            step (int): Step for printing and plotting.
+            step (int): Step size for printing and graphing.
 
         Returns:
-            tuple: Evaluation of the training data after iterations of training have occurred.
+            numpy.ndarray: Activated output of the neuron.
+            float: Cost of the model.
         """
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
-        if iterations < 1:
+        if iterations <= 0:
             raise ValueError("iterations must be a positive integer")
         if not isinstance(alpha, float):
             raise TypeError("alpha must be a float")
@@ -164,21 +165,26 @@ class Neuron:
             raise ValueError("step must be positive and <= iterations")
 
         costs = []
-        for i in range(iterations + 1):
-            A = self.forward_prop(X)
-            self.gradient_descent(X, Y, A, alpha)
+        accuracies = []
 
+        for i in range(iterations + 1):
+            self.__A = self.forward_prop(X)
+            cost = self.cost(Y, self.__A)
             if verbose and i % step == 0:
-                cost = self.cost(Y, A)
-                print("Cost after {} iterations: {}".format(i, cost))
+                print(f"Cost after {i} iterations: {cost}")
+
+            if graph and i % step == 0:
                 costs.append(cost)
+                accuracy = np.sum((self.__A >= 0.5) == Y) / Y.shape[1] * 100
+                accuracies.append(accuracy)
+
+            self.gradient_descent(X, Y, self.__A, alpha)
 
         if graph:
-            plt.plot(costs, 'b-')
-            plt.xlabel('Iteration')
-            plt.ylabel('Cost')
+            plt.plot(range(0, iterations + 1, step), costs, 'b-')
+            plt.xlabel('iteration')
+            plt.ylabel('cost')
             plt.title('Training Cost')
             plt.show()
 
         return self.evaluate(X, Y)
-
