@@ -30,4 +30,3 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
 
         weights['W{}'.format(i)].assign_sub(alpha * dW)
         weights['b{}'.format(i)].assign_sub(alpha * db)
-
