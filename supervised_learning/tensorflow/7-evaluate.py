@@ -2,7 +2,6 @@
 """A module that evaluates the output of a neural network."""
 
 
-import numpy as np
 import tensorflow as tf
 
 

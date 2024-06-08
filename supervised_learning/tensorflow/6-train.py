@@ -2,7 +2,6 @@
 """A module that builds, trains, and saves a neural network classifier."""
 
 
-import numpy as np
 import tensorflow as tf
 calculate_accuracy = __import__('3-calculate_accuracy').calculate_accuracy
 calculate_loss = __import__('4-calculate_loss').calculate_loss
