@@ -3,12 +3,13 @@
 
 import tensorflow as tf
 
+
 def l2_reg_create_layer(prev, n, activation, lambtha):
     """Creates a layer with L2 regularization"""
-    kernel_regularizer = tf.keras.regularizers.L2(l2=lambtha)
+    kernel_regularizer = tf.keras.regularizers.L2(lambtha)
 
-    layer = tf.layers.Dense(
-        units=n, 
+    layer = tf.keras.layers.Dense(
+        units=n,
         activation=activation,
         kernel_regularizer=kernel_regularizer
     )
