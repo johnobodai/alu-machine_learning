@@ -4,10 +4,9 @@ Updates the weights of a neural network
 using L2 regularization with gradient descent
 """
 
-import numpy as np
+import tensorflow as tf
 
-def l2_reg_gradient_descent(Y, weights, cache,
-                            alpha, lambtha, L):
+def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     """
     Updates weights and biases of a neural network
     using gradient descent with L2 regularization.
@@ -21,13 +20,13 @@ def l2_reg_gradient_descent(Y, weights, cache,
         W = weights['W{}'.format(i)]
         b = weights['b{}'.format(i)]
 
-        dW = (np.matmul(dZ, A_prev.T) / m) + \
+        dW = (tf.matmul(dZ, A_prev, transpose_b=True) / m) + \
              (lambtha * W / m)
-        db = np.sum(dZ, axis=1, keepdims=True) / m
+        db = tf.reduce_sum(dZ, axis=1, keepdims=True) / m
 
         if i > 1:
-            dA_prev = 1 - np.square(A_prev)
-            dZ = np.matmul(W.T, dZ) * dA_prev
+            dA_prev = 1 - tf.square(A_prev)
+            dZ = tf.matmul(W, dZ, transpose_a=True) * dA_prev
 
-        weights['W{}'.format(i)] -= alpha * dW
-        weights['b{}'.format(i)] -= alpha * db
+        weights['W{}'.format(i)] = W - alpha * dW
+        weights['b{}'.format(i)] = b - alpha * db
