@@ -28,5 +28,6 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
             dA_prev = 1 - tf.square(A_prev)
             dZ = tf.matmul(W, dZ, transpose_a=True) * dA_prev
 
-        weights['W{}'.format(i)] = W - alpha * dW
-        weights['b{}'.format(i)] = b - alpha * db
+        weights['W{}'.format(i)].assign_sub(alpha * dW)
+        weights['b{}'.format(i)].assign_sub(alpha * db)
+
