@@ -6,6 +6,7 @@ using L2 regularization with gradient descent
 
 import numpy as np
 
+
 def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     """
     Updates weights and biases of a neural network
