@@ -1,25 +1,28 @@
 #!/usr/bin/env python3
+"""
+Creates a confusion matrix.
+"""
+
+
 import numpy as np
 
-def sensitivity(confusion):
+def create_confusion_matrix(labels, logits):
     """
-    Calculates the sensitivity for each class in a confusion matrix.
+    Creates a confusion matrix.
 
     Args:
-        confusion (np.ndarray): Confusion matrix of shape (classes, classes) where
-                                row indices represent the correct labels and column
-                                indices represent the predicted labels.
+        labels (np.ndarray): One-hot numpy array of shape (m, classes)
+                             with the correct labels.
+        logits (np.ndarray): One-hot numpy array of shape (m, classes)
+                             with the predicted labels.
 
     Returns:
-        np.ndarray: Array of shape (classes,) containing the sensitivity of each class.
+        np.ndarray: Confusion matrix of shape (classes, classes).
     """
-    # True positives are the diagonal elements
-    true_positives = np.diag(confusion)
-
-    # False negatives are the sum of the rows, minus the true positives
-    false_negatives = np.sum(confusion, axis=1) - true_positives
-
-    # Calculate sensitivity
-    sensitivity_values = true_positives / (true_positives + false_negatives)
-
-    return sensitivity_values
+    true_labels = np.argmax(labels, axis=1)
+    predicted_labels = np.argmax(logits, axis=1)
+    num_classes = labels.shape[1]
+    confusion_matrix = np.zeros((num_classes, num_classes))
+    for true, pred in zip(true_labels, predicted_labels):
+        confusion_matrix[true, pred] += 1
+    return confusion_matrix
