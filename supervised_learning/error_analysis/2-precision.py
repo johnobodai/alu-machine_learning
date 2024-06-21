@@ -12,11 +12,11 @@ def precision(confusion):
 
     Args:
         confusion (np.ndarray): Confusion matrix of shape (classes, classes)
-                                where row indices represent the correct labels
-                                and column indices represent the predicted labels.
+                                where row indices represent the
+                                and column labels.
 
     Returns:
-        np.ndarray: Array of shape (classes,) containing the precision of each class.
+        np.ndarray: Array of shape (classes,).
     """
     true_positives = np.diag(confusion)
     false_positives = np.sum(confusion, axis=0) - true_positives
