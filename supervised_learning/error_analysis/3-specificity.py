@@ -14,12 +14,13 @@ def specificity(confusion):
     Args:
         confusion (np.ndarray): Confusion matrix of shape (classes, classes)
                                 where row indices represent the correct labels
-                                and column indices represent the predicted labels.
+                                and column indices.
 
     Returns:
-        np.ndarray: Array of shape (classes,) containing the specificity of each class.
+        np.ndarray: Array of shape (classes,).
     """
-    true_negatives = np.sum(confusion) - (np.sum(confusion, axis=1) + np.sum(confusion, axis=0) - np.diag(confusion))
+    true_negatives = np.sum(confusion) - (np.sum(confusion, axis=1)
+        + np.sum(confusion, axis=0) - np.diag(confusion))
     false_positives = np.sum(confusion, axis=0) - np.diag(confusion)
     specificity_values = true_negatives / (true_negatives + false_positives)
     return specificity_values
