@@ -1,25 +1,23 @@
 #!/usr/bin/env python3
-"""Retrieves home planets of sentient species."""
+"""Retrieves ships that can hold a given number of passengers."""
 import requests
 
 
-def sentientPlanets():
-    """Returns list of home planet names."""
-    url = "https://swapi.dev/api/species/"
-    planets = []
+def availableShips(passengerCount):
+    """Returns list of ships that can hold given number of passengers."""
+    url = "https://swapi.dev/api/starships/"
+    ships = []
 
     while url:
         response = requests.get(url)
         data = response.json()
 
-        for species in data['results']:
-            if species['classification'] == 'sentient' or species['designation'] == 'sentient':
-                homeworld = species['homeworld']
-                if homeworld:
-                    planet_response = requests.get(homeworld)
-                    planet_data = planet_response.json()
-                    planets.append(planet_data['name'])
+        for ship in data['results']:
+            passengers = ship['passengers']
+            if passengers.isdigit() and int(passengers) >= passengerCount:
+                ships.append(ship['name'])
 
         url = data['next']
 
-    return planets
+    return ships
+
