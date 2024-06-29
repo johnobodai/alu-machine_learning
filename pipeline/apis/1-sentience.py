@@ -1,35 +1,31 @@
 #!/usr/bin/env python3
-"""Retrieves home planets of all sentient species."""
+"""
+Retrieve names of home planets of all sentient species from SWAPI.
+"""
 import requests
 
 def sentientPlanets():
-    """Returns list of names of home planets of sentient species."""
-    url = "https://swapi.dev/api/species/"
+    """
+    Retrieves the list of names of home planets of all sentient species.
+    Returns a list of planet names.
+    """
     planets = []
-    homeworlds = set()  # To avoid duplicates
-    planets_not_found = []
-
+    url = "https://swapi.dev/api/species/"
+    
     while url:
         response = requests.get(url)
         data = response.json()
         
         for species in data['results']:
             if species['designation'] == 'sentient' and species['homeworld']:
-                homeworlds.add(species['homeworld'])
+                homeworld_url = species['homeworld']
+                homeworld_response = requests.get(homeworld_url)
+                if homeworld_response.status_code == 200:
+                    homeworld_data = homeworld_response.json()
+                    planets.append(homeworld_data['name'])
+                else:
+                    planets.append('unknown')
         
         url = data['next']
     
-    for homeworld in homeworlds:
-        response = requests.get(homeworld)
-        if response.status_code == 200:
-            planet_data = response.json()
-            planets.append(planet_data['name'])
-        else:
-            planets_not_found.append(homeworld)
-    
-    if planets_not_found:
-        return f"Planets not found: {planets_not_found}"
-    else:
-        return "OK"
-
-
+    return planets
