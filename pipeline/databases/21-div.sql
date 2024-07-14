@@ -7,7 +7,7 @@ DELIMITER //
 CREATE FUNCTION SafeDiv(a INT, b INT)
 RETURNS DECIMAL(10, 6)
 BEGIN
-  DECLARE result DECIMAL(10, 6);
+  DECLARE result DECIMAL(10, 1);
 
   IF b = 0 THEN
     SET result = 0;
