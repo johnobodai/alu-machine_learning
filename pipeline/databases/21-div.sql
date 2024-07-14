@@ -1,22 +1,19 @@
 -- Function: SafeDiv
--- Description: Safely divides the first number by the second number or returns 0 if the second number is zero.
--- Arguments: a - INT, b - INT
--- Returns: DECIMAL(10, 6)
+-- Description: Divides two integers and returns the result with one decimal place, or 0 if the divisor is 0
 DELIMITER //
 
 CREATE FUNCTION SafeDiv(a INT, b INT)
-RETURNS DECIMAL(10, 6)
+RETURNS DECIMAL(10, 1)
 BEGIN
   DECLARE result DECIMAL(10, 1);
 
   IF b = 0 THEN
-    SET result = 0;
+    SET result = 0.0;
   ELSE
-    SET result = a / b;
+    SET result = CAST(a AS DECIMAL(10, 1)) / b;
   END IF;
 
   RETURN result;
 END //
-
 DELIMITER ;
 
