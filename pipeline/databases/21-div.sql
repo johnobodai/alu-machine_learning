@@ -10,7 +10,7 @@ BEGIN
   IF b = 0 THEN
     SET result = 0.0;
   ELSE
-    SET result = CAST(a AS DECIMAL(10, 1)) / b;
+    SET result = ROUND(CAST(a AS DECIMAL(10, 1)) / b, 1);
   END IF;
 
   RETURN result;
