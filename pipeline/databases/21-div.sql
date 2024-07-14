@@ -1,3 +1,5 @@
+
+--divides the first by the second
 DELIMITER //
 
 CREATE FUNCTION SafeDiv(a INT, b INT)
