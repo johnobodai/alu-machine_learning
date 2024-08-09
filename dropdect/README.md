@@ -1,5 +1,4 @@
-```markdown
-# Dropout Detection System
+### Dropout Detection System
 
 ## Overview
 This project implements a dropout detection system using a neural network model. The system is built using Flask to provide a RESTful API for making predictions and evaluating the model. The model predicts whether a student is likely to drop out or graduate based on various input features.
