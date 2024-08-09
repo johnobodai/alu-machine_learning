@@ -1,5 +1,3 @@
-Certainly! Here's everything under one markdown sheet:
-
 ```markdown
 # Dropout Detection System
 
