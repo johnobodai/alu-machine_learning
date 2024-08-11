@@ -1,3 +1,5 @@
+Here’s the updated README.md file content with the new commands added:
+
 ### Dropout Detection System
 
 ## Overview
@@ -32,31 +34,15 @@ python3 src/app.py
 ```
 
 ## Usage
-### Prediction
-To make a prediction, send a POST request to the `/predict` endpoint with JSON input data:
+
+### Make a Prediction
 ```bash
-curl -X POST http://127.0.0.1:5000/predict -H "Content-Type: application/json" -d '{"input": [1, 8, 5, 2, 1, 1, 1, 13, 10, 6, 10, 1, 0, 0, 1, 1, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10.8, 1.4, 1.74]}'
-```
-The response will contain the prediction in JSON format:
-```json
-{
-  "prediction": [true]
-}
+curl -X POST -H "Content-Type: application/json" -d '{"input": [1, 8, 5, 2, 1, 1, 1, 13, 10, 6, 10, 1, 0, 0, 1, 1, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10.8, 1.4, 1.74]}' http://127.0.0.1:5000/predict
 ```
 
-### Evaluation
-To evaluate the model, send a POST request to the `/evaluate` endpoint:
+### Evaluating the Model
 ```bash
 curl -X POST http://127.0.0.1:5000/evaluate
-```
-The response will contain evaluation metrics:
-```json
-{
-  "accuracy": 0.85,
-  "precision": 0.87,
-  "recall": 0.85,
-  "f1_score": 0.86
-}
 ```
 
 ### Test Model Prediction
@@ -69,6 +55,26 @@ The response will contain the test prediction:
 {
   "test_prediction": [true]
 }
+```
+
+### Uploading Data
+```bash
+curl -X POST http://127.0.0.1:5000/upload_data -F "file=@data/train/dataset.csv"
+```
+
+### Preprocessing Data
+```bash
+curl -X POST http://127.0.0.1:5000/preprocess_data
+```
+
+### Retraining the Model
+```bash
+curl -X POST http://127.0.0.1:5000/retrain
+```
+
+### Evaluating After Retraining
+```bash
+curl -X POST http://127.0.0.1:5000/evaluate_after_retraining
 ```
 
 ## File Descriptions
@@ -88,5 +94,4 @@ The response will contain the test prediction:
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-```
 
