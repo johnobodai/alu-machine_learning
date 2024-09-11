@@ -1,40 +1,46 @@
 #!/usr/bin/env python3
 """
-Function Forward propagation
-
+    Script that defines a class RNNCell
+    that defines a simple recurrent neural network cell
 """
+
+
 import numpy as np
 
 
-def rnn(rnn_cell, X, h_0):
-    """performs forward propagation for a simple RNN
-    rnn_cell is an instance of RNNCell that will be used for the
-    forward propagation
-    X is the data to be used, given as a numpy.ndarray of shape (t, m, i)
-    t is the maximum number of time steps
-    m is the batch size
-    i is the dimensionality of the data
-    h_0 is the initial hidden state, given as numpy.ndarray of shape (m, h)
-    h is the dimensionality of the hidden state
-    Returns: H, Y
-    H is a numpy.ndarray containing all of the hidden states
-    Y is a numpy.ndarray containing all of the outputs
+class RNNCell:
     """
-    t, m, i = X.shape
-    _, h = h_0.shape
-    H = h_0
-    H = np.reshape(H, (1, m, h))
+    Class that defines a simple recurrent neural network cell
+    """
 
-    for iter in range(t):
-        h_next, y = rnn_cell.forward(h_0, X[iter, :, :])
-        h_next_r = np.reshape(h_next, (1, m, h))
-        H = np.vstack((H, h_next_r))
-        if iter == 0:
-            yv = y.shape[1]
-            y_r = np.reshape(y, (1, m, yv))
-            Y = y_r
-        else:
-            y_r = np.reshape(y, (1, m, yv))
-            Y = np.vstack((Y, y_r))
-        h_0 = h_next
-    return(H, Y)
+    def __init__(self, i, h, o):
+        """
+        Class constructor
+        """
+        self.bh = np.zeros((1, h))
+        self.by = np.zeros((1, o))
+        self.Wh = np.random.normal(size=(h + i, h))
+        self.Wy = np.random.normal(size=(h, o))
+
+    def softmax(self, x):
+        """
+        Performs the softmax function
+
+        parameters:
+            x: the value to perform softmax on to generate output of cell
+
+        return:
+            softmax of x
+        """
+        e_x = np.exp(x - np.max(x, axis=1, keepdims=True))
+        softmax = e_x / e_x.sum(axis=1, keepdims=True)
+        return softmax
+
+    def forward(self, h_prev, x_t):
+        """
+        Function that performs forward propagation
+        """
+        concatenation = np.concatenate((h_prev, x_t), axis=1)
+        h_next = np.tanh(np.matmul(concatenation, self.Wh) + self.bh)
+        y = self.softmax(np.matmul(h_next, self.Wy) + self.by)
+        return h_next, y
