@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Defines a function that calculates the positional encoding for a transformer.
+Calculates the positional encoding for a transformer model.
 """
 
 import numpy as np
@@ -8,37 +8,40 @@ import numpy as np
 
 def compute_angle(position, index, depth):
     """
-    Calculates the angles for the positional encoding formulas.
+    Computes the angle for the formulas used in positional encoding.
 
-    PE(position, 2i) = sin(position / 10000^(2i / depth))
-    PE(position, 2i + 1) = cos(position / 10000^(2i / depth))
+    Args:
+        position (int): The position in the sequence.
+        index (int): The index of the dimension.
+        depth (int): The model depth.
+
+    Returns:
+        float: The computed angle for the given position and index.
     """
-    rate = 1 / (10000 ** (index / depth))
-    return position * rate
+    angle_rate = 1 / (10000 ** (index / depth))
+    return position * angle_rate
 
 
-def positional_encoding(max_length, depth):
+def positional_encoding(max_length, model_depth):
     """
-    Calculates the positional encoding for a transformer.
+    Generates the positional encoding for a transformer.
 
-    parameters:
-        max_length [int]:
-            Represents the maximum sequence length.
-        depth [int]:
-            Model depth.
+    Args:
+        max_length (int): The maximum length of the input sequences.
+        model_depth (int): The depth of the model.
 
-    returns:
-        [numpy.ndarray of shape (max_length, depth)]:
-            Contains the positional encoding vectors.
+    Returns:
+        numpy.ndarray: A matrix of shape (max_length, model_depth) 
+                       containing the positional encoding vectors.
     """
-    encoding_matrix = np.zeros((max_length, depth))
+    encoding_matrix = np.zeros((max_length, model_depth))
 
     for pos in range(max_length):
-        for idx in range(0, depth, 2):
-            # Sin for even indices of encoding_matrix
-            encoding_matrix[pos, idx] = np.sin(compute_angle(pos, idx, depth))
-            # Cos for odd indices of encoding_matrix
-            encoding_matrix[pos, idx + 1] = np.cos(compute_angle(pos, idx, depth))
+        for dim in range(0, model_depth, 2):
+            # sine for even indices of the encoding matrix
+            encoding_matrix[pos, dim] = np.sin(compute_angle(pos, dim, model_depth))
+            # cosine for odd indices of the encoding matrix
+            encoding_matrix[pos, dim + 1] = em
+            em = np.cos(compute_angle(pos, dim, model_depth))
 
-    return encoding_matrix
-
+    return em
