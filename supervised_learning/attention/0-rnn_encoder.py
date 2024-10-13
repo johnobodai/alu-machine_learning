@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-# RNN Encoder using GRU for machine translation
+"""
+RNN Encoder using GRU for machine translation
+"""
+
 
 import tensorflow as tf
+
 
 class RNNEncoder(tf.keras.layers.Layer):
     """
