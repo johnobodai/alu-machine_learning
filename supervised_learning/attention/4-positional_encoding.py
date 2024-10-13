@@ -1,42 +1,44 @@
 #!/usr/bin/env python3
 """
-Calculate the positional encoding for a transformer.
+Calculates the positional encoding for a transformer.
 """
 
 import numpy as np
 
 
-def get_angle(pos, i, dm):
+def compute_angle(position, index, depth):
     """
-    Calculates the angle for positional encoding.
+    Calculates the angles for the positional encoding formulas.
 
-    Args:
-        pos (int): The position index.
-        i (int): The index for the dimension.
-        dm (int): Model depth.
-
-    Returns:
-        float: Calculated angle for the given position and index.
+    PE(position, 2i) = sin(position / 10000^(2i / depth))
+    PE(position, 2i + 1) = cos(position / 10000^(2i / depth))
     """
-    return pos / (10000 ** (i / dm))
+    rate = 1 / (10000 ** (index / depth))
+    return position * rate
 
 
-def positional_encoding(max_seq_len, dm):
+def positional_encoding(max_length, depth):
     """
     Calculates the positional encoding for a transformer.
 
-    Args:
-        max_seq_len (int): Maximum sequence length.
-        dm (int): Model depth.
+    parameters:
+        max_length [int]:
+            Represents the maximum sequence length.
+        depth [int]:
+            Model depth.
 
-    Returns:
-        np.ndarray: Positional encoding vectors of shape (max_seq_len, dm).
+    returns:
+        [numpy.ndarray of shape (max_length, depth)]:
+            Contains the positional encoding vectors.
     """
-    positional_enc = np.zeros((max_seq_len, dm))
+    encoding_matrix = np.zeros((max_length, depth))
 
-    for pos in range(max_seq_len):
-        angles = get_angle(pos, np.arange(dm), dm)
-        positional_enc[pos, 0::2] = np.sin(angles[0::2])   # sine for even indices
-        positional_enc[pos, 1::2] = np.cos(angles[1::2])   # cosine for odd indices
+    for pos in range(max_length):
+        for idx in range(0, depth, 2):
+            # Sin for even indices of encoding_matrix
+            encoding_matrix[pos, idx] = np.sin(compute_angle(pos, idx, depth))
+            # Cos for odd indices of encoding_matrix
+            encoding_matrix[pos, idx + 1] = np.cos(compute_angle(pos, idx, depth))
 
-    return positional_enc
+    return encoding_matrix
+
