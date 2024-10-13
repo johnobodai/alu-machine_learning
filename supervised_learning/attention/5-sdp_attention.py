@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Performs multi head attention
+"""
 
 import tensorflow as tf
 
@@ -14,10 +17,10 @@ def sdp_attention(Q, K, V, mask=None):
                                  (..., seq_len_q, seq_len_v). Defaults to None.
 
     Returns:
-        tuple: 
-            output (tensor): Tensor containing the scaled dot product attention 
+        tuple:
+            output (tensor): Tensor containing the scaled dot product attention
                              of shape (..., seq_len_q, dv).
-            weights (tensor): Tensor containing the attention weights of shape 
+            weights (tensor): Tensor containing the attention weights of shape
                               (..., seq_len_q, seq_len_v).
     """
     # Calculate the dot product of Q and K
@@ -35,4 +38,3 @@ def sdp_attention(Q, K, V, mask=None):
     output = tf.matmul(attention_weights, V)
 
     return output, attention_weights
-
