@@ -59,13 +59,13 @@ class Encoder(tf.keras.layers.Layer):
             [tensor of shape (batch, input_seq_len, dm)]:
                 contains the encoder output
         """
-        seq_len = tf.shape(x)[1]
-        input_enc = self.embedding(x)
-        input_enc += self.positional_encoding[:seq_len, :]
-        output = self.dropout(input_enc, training=training)
+        seq_len = tf.shape(x)[1]  # Get the input sequence length
+        input_enc = self.embedding(x)  # Embedding the input
+        input_enc += self.positional_encoding[:seq_len, :]  # Add positional encodings
+        output = self.dropout(input_enc, training=training)  # Apply dropout
 
         for block in self.blocks:
-            output = block(output, training, mask)
+            output = block(output, training, mask)  # Pass through each EncoderBlock
 
         return output
 
