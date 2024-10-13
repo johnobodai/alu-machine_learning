@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# RNN Encoder using GRU for machine translation
+
 import tensorflow as tf
 
 class RNNEncoder(tf.keras.layers.Layer):
@@ -9,7 +11,7 @@ class RNNEncoder(tf.keras.layers.Layer):
     def __init__(self, vocab, embedding, units, batch):
         """
         Initialize the encoder.
-        
+
         Args:
             vocab (int): Vocabulary size.
             embedding (int): Embedding vector size.
@@ -21,16 +23,16 @@ class RNNEncoder(tf.keras.layers.Layer):
         self.units = units
         self.embedding = tf.keras.layers.Embedding(vocab, embedding)
         self.gru = tf.keras.layers.GRU(
-            units, 
-            return_sequences=True, 
-            return_state=True, 
+            units,
+            return_sequences=True,
+            return_state=True,
             recurrent_initializer='glorot_uniform'
         )
 
     def initialize_hidden_state(self):
         """
         Initialize hidden state.
-        
+
         Returns:
             Tensor of zeros for the hidden state.
         """
@@ -39,11 +41,11 @@ class RNNEncoder(tf.keras.layers.Layer):
     def call(self, x, initial):
         """
         Run the encoder.
-        
+
         Args:
             x (Tensor): Input tensor.
             initial (Tensor): Initial hidden state.
-        
+
         Returns:
             Tuple of (outputs, last hidden state).
         """
