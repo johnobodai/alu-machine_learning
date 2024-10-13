@@ -58,7 +58,7 @@ class RNNDecoder(tf.keras.layers.Layer):
 
         # Reshape and apply the Dense layer to get the output word
         output_word = tf.reshape(output_sequence, \
-            (-1, output_sequence.shape[2]))
+            -1, output_sequence.shape[2]))
         output_word = self.F(output_word)
 
         return output_word, new_hidden_state
