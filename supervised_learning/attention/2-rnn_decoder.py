@@ -46,8 +46,8 @@ class RNNDecoder(tf.keras.layers.Layer):
         x = self.embedding(x)
         attention = SelfAttention(256)  # Assuming units=256 for SelfAttention
         context, _ = attention(s_prev, hidden_states)
-        x = tf.concat([context, x], axis=-1)
-        output, s = self.gru(x, initial_state=s_prev)
-        y = self.F(output)
+        x = tf.concat([context, x], axis=-1)  # Concatenate context with the embedding
+        output, s = self.gru(x, initial_state=s_prev)  # GRU layer
+        y = self.F(output)  # Final dense layer
         return y, s
 
