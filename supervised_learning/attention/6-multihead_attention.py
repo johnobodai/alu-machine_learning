@@ -1,77 +1,76 @@
 #!/usr/bin/env python3
 """
-Implements a class inheriting from
-tensorflow.keras.layers.Layer to execute
-multi-head attention.
+Defines a class for multi-head attention
 """
 
 import tensorflow as tf
-scaled_attention = __import__('5-sdp_attention').sdp_attention
+sdp_attention = __import__('5-sdp_attention').sdp_attention
 
 
 class MultiHeadAttention(tf.keras.layers.Layer):
     """
-    Class to implement multi-head attention.
+    Class for performing multi-head attention
     """
-    def __init__(self, model_dim, num_heads):
-        """
-        Class constructor.
 
-        Parameters:
-            model_dim [int]: Dimensionality of the model.
-            num_heads [int]: Number of attention heads.
+    def __init__(self, dm, h):
+        """
+        Initializes the MultiHeadAttention class
+
+        Args:
+            dm (int): Dimensionality of the model
+            h (int): Number of heads
         """
         super(MultiHeadAttention, self).__init__()
-        self.num_heads = num_heads
-        self.model_dim = model_dim
-        self.head_dim = model_dim // num_heads
-        self.dense_query = tf.keras.layers.Dense(units=model_dim)
-        self.dense_key = tf.keras.layers.Dense(units=model_dim)
-        self.dense_value = tf.keras.layers.Dense(units=model_dim)
-        self.output_dense = tf.keras.layers.Dense(units=model_dim)
+        self.h = h
+        self.dm = dm
+        self.depth = dm // h
+        self.Wq = tf.keras.layers.Dense(units=dm)
+        self.Wk = tf.keras.layers.Dense(units=dm)
+        self.Wv = tf.keras.layers.Dense(units=dm)
+        self.linear = tf.keras.layers.Dense(units=dm)
 
-    def split_heads(self, x, batch_size):
+    def split_heads(self, tensor, batch_size):
         """
-        Splits last dimension into (num_heads, head_dim).
-        """
-        x = tf.reshape(x, (batch_size, -1, self.num_heads, 
-                           self.head_dim))
-        return tf.transpose(x, perm=[0, 2, 1, 3])
+        Splits the last dimension into multiple heads
 
-    def call(self, queries, keys, values, mask):
-        """
-        Generates attention output and weights.
-
-        Parameters:
-            queries: Input for query matrix.
-            keys: Input for key matrix.
-            values: Input for value matrix.
-            mask: Optional mask (default None).
+        Args:
+            tensor: Input tensor to split
+            batch_size: Batch size of the input
 
         Returns:
-            outputs: Scaled dot product attention.
-            weights: Attention weights.
+            Tensor: Reshaped and transposed tensor
         """
-        batch_size = tf.shape(queries)[0]
+        tensor = tf.reshape(tensor, (batch_size, -1, self.h, self.depth))
+        return tf.transpose(tensor, perm=[0, 2, 1, 3])
 
-        query_matrix = self.dense_query(queries)
-        key_matrix = self.dense_key(keys)
-        value_matrix = self.dense_value(values)
+    def call(self, Q, K, V, mask):
+        """
+        Computes scaled dot product attention
 
-        query_matrix = self.split_heads(query_matrix, 
-                                         batch_size)
-        key_matrix = self.split_heads(key_matrix, 
-                                       batch_size)
-        value_matrix = self.split_heads(value_matrix, 
-                                         batch_size)
+        Args:
+            Q: Query tensor
+            K: Key tensor
+            V: Value tensor
+            mask: Optional mask (always None)
 
-        attention_output, attention_weights = scaled_attention(
-            query_matrix, key_matrix, value_matrix, mask)
+        Returns:
+            Tensor: Attention output
+            Tensor: Attention weights
+        """
+        batch_size = tf.shape(Q)[0]
+        query = self.Wq(Q)
+        key = self.Wk(K)
+        value = self.Wv(V)
 
-        attention_output = tf.transpose(attention_output, 
-                                         perm=[0, 2, 1, 3])
-        concat_attention = tf.reshape(attention_output, 
-                                      (batch_size, -1, self.model_dim))
-        outputs = self.output_dense(concat_attention)
+        query = self.split_heads(query, batch_size)
+        key = self.split_heads(key, batch_size)
+        value = self.split_heads(value, batch_size)
 
-        return outputs, attention_weights
+        attention, weights = sdp_attention(query, key, value, mask)
+
+        attention = tf.transpose(attention, perm=[0, 2, 1, 3])
+        concat_attention = tf.reshape(attention, (batch_size, -1, self.dm))
+        outputs = self.linear(concat_attention)
+
+        return outputs, weights
+
