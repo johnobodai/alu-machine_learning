@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Calculates the positional encoding for a transformer.
+Defines a function that calculates the positional encoding for a transformer.
 """
 
 import numpy as np
