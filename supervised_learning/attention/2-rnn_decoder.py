@@ -4,6 +4,7 @@ RNN Decoder for machine translation.
 """
 
 import tensorflow as tf
+SelfAttention = __import__('1-self_attention').SelfAttention
 
 class RNNDecoder(tf.keras.layers.Layer):
     """
@@ -43,7 +44,8 @@ class RNNDecoder(tf.keras.layers.Layer):
             Tuple of (y, s).
         """
         x = self.embedding(x)
-        context, _ = SelfAttention(256)(s_prev, hidden_states)  # Assuming units=256 for SelfAttention
+        attention = SelfAttention(256)  # Assuming units=256 for SelfAttention
+        context, _ = attention(s_prev, hidden_states)
         x = tf.concat([context, x], axis=-1)
         output, s = self.gru(x, initial_state=s_prev)
         y = self.F(output)
