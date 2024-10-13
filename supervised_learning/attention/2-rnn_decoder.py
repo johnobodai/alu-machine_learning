@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
-RNN Decoder using GRU for machine translation.
+RNN Decoder using GRU for machine translation
 """
 
 import tensorflow as tf
-
 SelfAttention = __import__('1-self_attention').SelfAttention
 
 
@@ -40,25 +39,19 @@ class RNNDecoder(tf.keras.layers.Layer):
         Args:
             x (Tensor): Input tensor.
             s_prev (Tensor): Previous decoder hidden state.
-            hidden_states (Tensor): Encoder's hidden states.
+            hidden_states (Tensor): Outputs of the encoder.
 
         Returns:
-            Tuple of (output word, new hidden state).
+            Tuple of (y, s).
+            y (Tensor): Output word as one hot vector in the target vocabulary.
+            s (Tensor): New decoder hidden state.
         """
         attention = SelfAttention(s_prev.shape[1])
-        context_vector, attention_weights = attention(s_prev, hidden_states)
-        x_embedded = self.embedding(x)
-
-        # Expand context vector to match the dimensions for concatenation
-        context_vector_expanded = tf.expand_dims(context_vector, axis=1)
-        x_combined = tf.concat([context_vector_expanded, x_embedded], axis=-1)
-
-        # Process the combined input through the GRU
-        output_sequence, new_hidden_state = self.gru(x_combined)
-
-        # Reshape and apply the Dense layer to get the output word
-        output_word = tf.reshape(output_sequence, (-1,
-            output_sequence.shape[2]))
-        output_word = self.F(output_word)
-
-        return output_word, new_hidden_state
+        context, weights = attention(s_prev, hidden_states)
+        x = self.embedding(x)
+        context = tf.expand_dims(context, 1)
+        x = tf.concat([context, x], axis=-1)
+        output, state = self.gru(x)
+        output = tf.reshape(output, (-1, output.shape[2]))
+        y = self.F(output)
+        return y, state
