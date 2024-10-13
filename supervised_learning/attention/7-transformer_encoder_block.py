@@ -44,7 +44,7 @@ class EncoderBlock(tf.keras.layers.Layer):
 
         sets the public instance attributes:
             mha: MultiHeadAttention layer
-            dense_hidden: the hidden dense layer with hidden units, relu activation
+            dense_hidden: the hidden dense layer with hidden units
             dense_output: the output dense layer with dm units
             layernorm1: the first layer norm layer, with epsilon=1e-6
             layernorm2: the second layer norm layer, with epsilon=1e-6
@@ -88,4 +88,3 @@ class EncoderBlock(tf.keras.layers.Layer):
         output2 = self.layernorm2(output1 + ffn_output)
 
         return output2
-
