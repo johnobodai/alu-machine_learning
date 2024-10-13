@@ -5,6 +5,7 @@ Self Attention for machine translation.
 
 import tensorflow as tf
 
+
 class SelfAttention(tf.keras.layers.Layer):
     """
     Self Attention layer for machine translation.
@@ -34,10 +35,12 @@ class SelfAttention(tf.keras.layers.Layer):
             Tuple of (context, weights).
         """
         # Calculate attention scores
-        score = self.V(tf.nn.tanh(self.W(s_prev) + self.U(hidden_states)))
-        weights = tf.nn.softmax(score, axis=1)
+        score = self.V(tf.nn.tanh(self.W(s_prev) + self.U(hidden_states)))  # (batch, input_seq_len, 1)
 
-        # Calculate context vector
-        context = tf.reduce_sum(weights * hidden_states, axis=1)
+        # Get weights by applying softmax to the scores
+        weights = tf.nn.softmax(score, axis=1)  # (batch, input_seq_len, 1)
+
+        # Calculate context vector as weighted sum of hidden states
+        context = tf.reduce_sum(weights * hidden_states, axis=1)  # (batch, units)
 
         return context, weights
