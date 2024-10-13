@@ -3,7 +3,6 @@
 Performs multi head attention
 """
 
-
 import tensorflow as tf
 
 def sdp_attention(Q, K, V, mask=None):
@@ -26,8 +25,9 @@ def sdp_attention(Q, K, V, mask=None):
     """
     # Calculate the dot product of Q and K
     dk = tf.cast(tf.shape(K)[-1], tf.float32)  # Get the depth of keys
-    scaled_attention_logits = sal
-    sal = tf.matmul(Q, K, transpose_b=True) / tf.math.sqrt(dk)
+    scaled_attention_logits = (
+    tf.matmul(Q, K, transpose_b=True) / tf.math.sqrt(dk)
+)
 
     # Apply the mask, if provided
     if mask is not None:
