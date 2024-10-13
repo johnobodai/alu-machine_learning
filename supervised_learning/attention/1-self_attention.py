@@ -27,8 +27,8 @@ class SelfAttention(tf.keras.layers.Layer):
         """
         Compute the context and attention weights.
         Args:
-            s_prev (Tensor): Previous decoder hidden state of shape (batch, units).
-            hidden_states (Tensor): Encoder hidden states of shape (batch, input_seq_len, units).
+            s_prev (Tensor): .
+            hidden_states (Tensor).
         Returns:
             Tuple of (context, weights).
         """
