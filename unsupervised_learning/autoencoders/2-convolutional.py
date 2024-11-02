@@ -1,4 +1,4 @@
-#!/usr/bin/env p#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Defines function that creates a convolutional autoencoder
 """
